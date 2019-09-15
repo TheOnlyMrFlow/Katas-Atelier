@@ -1,0 +1,17 @@
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\xunit.runner.utility.netcoreapp10.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\Bowling.Tests.deps.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\Bowling.Tests.runtimeconfig.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\Bowling.Tests.runtimeconfig.dev.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\Bowling.Tests.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\Bowling.Tests.pdb
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\Bowling.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\bin\Debug\netcoreapp2.2\Bowling.pdb
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\obj\Debug\netcoreapp2.2\Bowling.Tests.csprojAssemblyReference.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\obj\Debug\netcoreapp2.2\Bowling.Tests.csproj.CoreCompileInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\obj\Debug\netcoreapp2.2\Bowling.Tests.AssemblyInfoInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\obj\Debug\netcoreapp2.2\Bowling.Tests.AssemblyInfo.cs
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\obj\Debug\netcoreapp2.2\Bowling.Tests.csproj.CopyComplete
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\obj\Debug\netcoreapp2.2\Bowling.Tests.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling.Tests\obj\Debug\netcoreapp2.2\Bowling.Tests.pdb

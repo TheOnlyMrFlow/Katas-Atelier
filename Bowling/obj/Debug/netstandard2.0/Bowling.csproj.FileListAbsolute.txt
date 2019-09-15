@@ -1,0 +1,9 @@
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling\bin\Debug\netstandard2.0\Bowling.deps.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling\bin\Debug\netstandard2.0\Bowling.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling\bin\Debug\netstandard2.0\Bowling.pdb
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling\obj\Debug\netstandard2.0\Bowling.csprojAssemblyReference.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling\obj\Debug\netstandard2.0\Bowling.csproj.CoreCompileInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling\obj\Debug\netstandard2.0\Bowling.AssemblyInfoInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling\obj\Debug\netstandard2.0\Bowling.AssemblyInfo.cs
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling\obj\Debug\netstandard2.0\Bowling.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\Bowling\obj\Debug\netstandard2.0\Bowling.pdb
