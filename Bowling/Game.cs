@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Bowling
@@ -10,51 +11,19 @@ namespace Bowling
 
         private int previousRoll;
 
-        private Frame firstFrame = null;
-        private Frame lastFrame = null;
+        private Frame firstFrame;
+        private Frame currentFrame;
       
         public Game()
         {
+            firstFrame = new Frame(1);
+            currentFrame = firstFrame;
         }
 
         public void Roll(int pins)
         {
 
-           if (alreadyBuildingAFrame)
-            {
-                Frame f = new Frame(previousRoll, pins, lastFrame);
-                lastFrame = f;
-                if (firstFrame == null)
-                {
-                    firstFrame = f;
-                }
-                alreadyBuildingAFrame = false;
-            }
-
-           else
-            {
-
-                if (lastFrame != null && lastFrame.Id == 10)
-                {
-                    lastFrame.setExtraRoll(pins);
-                }
-
-                else if (pins == 10)
-                {
-                    Frame f = new Frame(10, 0, lastFrame);
-                    lastFrame = f;
-                    if (firstFrame == null)
-                    {
-                        firstFrame = f;
-                    }
-                }
-
-                else
-                {
-                    previousRoll = pins;
-                    alreadyBuildingAFrame = true;
-                }
-            }
+            currentFrame = currentFrame.Roll(pins);
 
         }
 
@@ -85,13 +54,45 @@ namespace Bowling
         {
             Common,
             Spare,
-            Strike
+            Strike,
+            NotYetDefined
         }
 
         public int Id;
 
-        private Frame previous = null;
+        
         private Frame next = null;
+
+        private List<int> rolls;
+
+        public FrameType Type = FrameType.NotYetDefined;
+
+        private Frame()
+        {
+            this.rolls = new List<int>();
+        }
+
+        public Frame(int id)
+            : this()
+        {
+            this.Id = id;
+        }
+
+        public Frame (Frame previous) 
+            : this()
+        {
+            if (previous == null)
+            {
+                this.Id = 1;
+                return;
+            }
+            previous.next = this;
+
+            this.Id = previous.Id + 1;
+
+
+        }
+
 
         public bool HasNext()
         {
@@ -103,96 +104,111 @@ namespace Bowling
             return next;
         }
 
-        private int roll1 = 0, roll2 = 0, roll3 = 0;
-
-        
-
-        public FrameType Type;
-
-
-        private Frame(int roll1, int roll2)
+        // return the frame which the next roll will belong to
+        public Frame Roll(int pins)
         {
-            if (roll1 + roll2 > 10)
+            this.rolls.Add(pins);
+            int count = this.rolls.Count;
+
+            // particular case of the last frame
+            if (Id == 10)
             {
-                throw new ImpossibleFrameException("" + (roll1 + roll2));
+
+                switch(count)
+                {
+                    case 1:
+                        if (rolls[0] == 10)
+                        {
+                            this.Type = FrameType.Strike;
+                        }
+                        return this;
+                    case 2:
+                        int sum = rolls[0] + rolls[1];
+                        if (Type == FrameType.NotYetDefined)
+                        {
+                            if (sum == 10)
+                            {
+                                this.Type = FrameType.Spare;
+                            }
+                            else if (sum < 10)
+                            {
+                                this.Type = FrameType.Common;
+                            }
+                            else
+                            {
+                                throw new ImpossibleFrameException("" + sum);
+                            }
+
+                        }
+                        return this;
+                    default:
+                        return null;
+                }
+ 
+            }
+            //common cases (i.e the 9 first frames)
+            else
+            {
+                switch(count)
+                {
+                    case 1: 
+                        if(pins == 10)
+                        {
+                            Type = FrameType.Strike;
+                            return new Frame(this);
+                        }
+                        return this;
+
+                    case 2:
+                        int sum = rolls[0] + rolls[1];
+                        if (sum == 10)
+                        {
+                            Type = FrameType.Spare;
+                        }
+                        else if (sum > 10)
+                        {
+                            throw new ImpossibleFrameException("" + sum);
+                        }
+                        return new Frame(this);
+                    default:
+                        return null;
+
+                }
             }
 
-            else if (roll1 == 10)
-            {
-                this.Type = FrameType.Strike;
-            }
-
-            else if (roll1 + roll2 == 10)
-            {
-                this.Type = FrameType.Spare;
-            }
-
-
-            this.roll1 = roll1;
-            this.roll2 = roll2;
         }
 
-        public Frame (int roll1, int roll2, Frame previous) 
-            : this(roll1, roll2)
+        private int ComputeBonus()
         {
-            if (previous == null)
+            if (Id == 10)
             {
-                this.Id = 1;
-                return;
+                return 0;
             }
-            this.previous = previous;
-            previous.next = this;
 
-            this.Id = previous.Id + 1;
+            switch(Type)
+            {
+                case FrameType.Common:
+                    return 0;
+
+                case FrameType.Spare:
+                    return next.rolls[0];
+
+                case FrameType.Strike:
+                    if (next.Type == FrameType.Strike && next.Id != 10)
+                    {
+                        return next.rolls[0] + next.next.rolls[0];
+                    }
+                    return next.rolls[0] + next.rolls[1];
+                default:
+                    return 0;
+            }
 
 
         }
-
-        public void setExtraRoll (int extraRoll)
-        {
-            if (this.roll3 != 0)
-            {
-                this.roll2 = this.roll3;
-            }
-            this.roll3 = extraRoll;
-        }
-
-
 
         public int Score()
         {
-            int ret = roll1 + roll2 + roll3;
-
-            if (next == null)
-            {
-                return ret;
-            }
-
-            if (Type == FrameType.Spare)
-            {
-                ret += next.roll1;
-            }
-
-            else if (Type == FrameType.Strike)
-            {
-                if (next.Type == FrameType.Strike)
-                {
-                    if (next.HasNext())
-                    {
-                        ret += 10 + next.next.roll1;
-                    }
-                    else
-                    {
-                        ret += 10 + next.roll2;
-                    }
-                }
-                else
-                {
-                    ret += next.roll1 + next.roll2;
-                }
-            }
-
-            return ret;
+            return rolls.Sum() + ComputeBonus();
         }
 
     }
