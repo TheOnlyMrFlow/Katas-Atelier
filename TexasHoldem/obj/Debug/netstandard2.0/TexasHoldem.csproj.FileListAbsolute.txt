@@ -1,0 +1,9 @@
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem\bin\Debug\netstandard2.0\TexasHoldem.deps.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem\bin\Debug\netstandard2.0\TexasHoldem.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem\bin\Debug\netstandard2.0\TexasHoldem.pdb
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem\obj\Debug\netstandard2.0\TexasHoldem.csprojAssemblyReference.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem\obj\Debug\netstandard2.0\TexasHoldem.csproj.CoreCompileInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem\obj\Debug\netstandard2.0\TexasHoldem.AssemblyInfoInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem\obj\Debug\netstandard2.0\TexasHoldem.AssemblyInfo.cs
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem\obj\Debug\netstandard2.0\TexasHoldem.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem\obj\Debug\netstandard2.0\TexasHoldem.pdb

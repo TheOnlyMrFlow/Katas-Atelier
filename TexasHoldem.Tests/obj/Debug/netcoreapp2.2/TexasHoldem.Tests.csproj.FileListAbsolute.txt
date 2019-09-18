@@ -1,0 +1,17 @@
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\xunit.runner.utility.netcoreapp10.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\TexasHoldem.Tests.deps.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\TexasHoldem.Tests.runtimeconfig.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\TexasHoldem.Tests.runtimeconfig.dev.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\TexasHoldem.Tests.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\TexasHoldem.Tests.pdb
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\TexasHoldem.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\bin\Debug\netcoreapp2.2\TexasHoldem.pdb
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\obj\Debug\netcoreapp2.2\TexasHoldem.Tests.csprojAssemblyReference.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\obj\Debug\netcoreapp2.2\TexasHoldem.Tests.csproj.CoreCompileInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\obj\Debug\netcoreapp2.2\TexasHoldem.Tests.AssemblyInfoInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\obj\Debug\netcoreapp2.2\TexasHoldem.Tests.AssemblyInfo.cs
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\obj\Debug\netcoreapp2.2\TexasHoldem.Tests.csproj.CopyComplete
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\obj\Debug\netcoreapp2.2\TexasHoldem.Tests.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.Tests\obj\Debug\netcoreapp2.2\TexasHoldem.Tests.pdb
