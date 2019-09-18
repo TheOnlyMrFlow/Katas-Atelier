@@ -71,5 +71,20 @@ namespace TexasHoldem.Tests
         }
 
 
+        public static IEnumerable<object[]> GetHandsOfDeals()
+        {
+            yield return new object[] { "Td Jh 9s Kc Ah", new List<Hand> {
+                new Hand(Face.Ace, Hand.HandLabel.HighCard)
+            } };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetHandsOfDeals))]
+        public void hands_of_deal (String dealAsString, List<Hand> expectedHands)
+        {
+            Deal d = new Deal(dealAsString.Split(' '));
+            Assert.Equal(expectedHands, d.GetHands());
+        }
+
     }
 }
