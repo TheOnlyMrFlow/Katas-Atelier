@@ -19,16 +19,6 @@ namespace TexasHoldem.Tests
             yield return new object[] { new Card(Face.Jack, Suit.Spades), new Card(Face.Jack, Suit.Clubs), Comparison.Equal };
         }
 
-        //[Theory]
-        //[MemberData(nameof(GetNumbers))]
-        //public void AllNumbers_AreOdd_WithMemberData(C a, int b, int c, int d)
-        //{
-        //    Assert.True(a == 5);
-        //    Assert.True(b == 1);
-        //    Assert.True(c == 3);
-        //    Assert.True(d == 9);
-        //}
-
 
         [Theory]
         [MemberData(nameof(GetCardsToCompare))]

@@ -45,7 +45,7 @@ namespace TexasHoldem
 
         public int CompareTo(Card other)
         {
-            return 0;
+            return this.Face - other.Face;
         }
     }
 
