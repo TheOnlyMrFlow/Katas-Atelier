@@ -107,6 +107,22 @@ namespace TexasHoldem
         {
             return this.Face - other.Face;
         }
+
+        override
+        public String ToString()
+        {
+            char faceChar;
+            char suitChar;
+
+            if (!faceToChar.TryGetValue(this.Face, out faceChar))
+                throw new Exception();
+
+            if (!suitToChar.TryGetValue(this.Suit, out suitChar))
+                throw new Exception();
+
+            return "" + faceChar + suitChar;
+
+        }
     }
 
 

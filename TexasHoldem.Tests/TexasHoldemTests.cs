@@ -50,9 +50,10 @@ namespace TexasHoldem.Tests
 
         [Theory]
         [MemberData(nameof(GetCardsStringAndObject))]
-        public void create_card_from_string(String cardString, Card expected)
+        public void card_to_string_vice_versa(String cardString, Card cardObject)
         {
-            Assert.Equal(expected, new Card(cardString));
+            Assert.Equal(cardObject, new Card(cardString));
+            Assert.Equal(cardString, cardObject.ToString());
         }
 
         [Fact]
@@ -68,5 +69,7 @@ namespace TexasHoldem.Tests
                 new Card("Id");
             });
         }
+
+
     }
 }
