@@ -54,5 +54,19 @@ namespace TexasHoldem.Tests
         {
             Assert.Equal(expected, new Card(cardString));
         }
+
+        [Fact]
+        public void incorrect_card_string_throw_error()
+        {
+            Assert.Throws<Exception>(() =>
+            {
+                new Card("1p");
+            });
+
+            Assert.Throws<Exception>(() =>
+            {
+                new Card("Id");
+            });
+        }
     }
 }

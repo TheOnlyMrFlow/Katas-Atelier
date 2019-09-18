@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace TexasHoldem
@@ -34,6 +35,41 @@ namespace TexasHoldem
     public class Card : IComparable<Card>
     {
 
+        private static readonly Dictionary<char, Suit> charToSuit
+            = new Dictionary<char, Suit>
+                {
+                    { 'c', Suit.Clubs },
+                    { 'd', Suit.Diamonds },
+                    { 'h', Suit.Hearts },
+                    { 's', Suit.Spades },
+                };
+
+        private static readonly Dictionary<Suit, char> suitToChar
+            = charToSuit.ToDictionary((i) => i.Value, (i) => i.Key);
+
+
+        private static readonly Dictionary<char, Face> charToFace
+            = new Dictionary<char, Face>
+                {
+                    { '1', Face.One },
+                    { '2', Face.Two },
+                    { '3', Face.Three },
+                    { '4', Face.Four },
+                    { '5', Face.Five },
+                    { '6', Face.Six },
+                    { '7', Face.Seven },
+                    { '8', Face.Eight },
+                    { '9', Face.Nine },
+                    { 'T', Face.Ten },
+                    { 'J', Face.Jack },
+                    { 'Q', Face.Queen },
+                    { 'K', Face.King },
+                    { 'A', Face.Ace },
+                };
+
+        private static readonly Dictionary<Face, char> faceToChar
+            = charToFace.ToDictionary((i) => i.Value, (i) => i.Key);
+
         public Face Face { get; set; }
         public Suit Suit { get; set; }
         
@@ -55,41 +91,12 @@ namespace TexasHoldem
             Suit suit;
 
 
-            if (faceChar >= '1' && faceChar <= '9')
-                face = (Face) Char.GetNumericValue(faceChar);
-
-            else if (faceChar == 'T')
-                face = Face.Ten;
-
-            else if (faceChar == 'J')
-                face = Face.Jack;
-
-            else if (faceChar == 'Q')
-                face = Face.Queen;
-
-            else if (faceChar == 'K')
-                face = Face.King;
-
-            else if (faceChar == 'A')
-                face = Face.Ace;
-
-            else
+            if (!charToFace.TryGetValue(faceChar, out face))
                 throw new Exception("Unknown card face");
 
-            if (suitChar == 'c')
-                suit = Suit.Clubs;
-
-            else if (suitChar == 'd')
-                suit = Suit.Diamonds;
-
-            else if (suitChar == 'h')
-                suit = Suit.Hearts;
-
-            else if (suitChar == 's')
-                suit = Suit.Spades;
-
-            else
+            if (!charToSuit.TryGetValue(suitChar, out suit))
                 throw new Exception("Unknown card suit");
+
 
             this.Face = face;
             this.Suit = suit;
