@@ -39,5 +39,20 @@ namespace TexasHoldem.Tests
             }
 
         }
+
+        public static IEnumerable<object[]> GetCardsStringAndObject()
+        {
+            yield return new object[] { "1c", new Card(Face.One, Suit.Clubs) };
+            yield return new object[] { "Ad", new Card(Face.Ace, Suit.Diamonds) };
+            yield return new object[] { "Jh", new Card(Face.Jack, Suit.Hearts) };
+            
+        }
+
+        [Theory]
+        [MemberData(nameof(GetCardsStringAndObject))]
+        public void create_card_from_string(String cardString, Card expected)
+        {
+            Assert.Equal(expected, new Card(cardString));
+        }
     }
 }
