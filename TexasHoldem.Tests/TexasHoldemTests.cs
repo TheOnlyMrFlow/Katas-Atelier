@@ -40,6 +40,22 @@ namespace TexasHoldem.Tests
 
         }
 
+        [Fact]
+        public void card_equality()
+        {
+            Card a = new Card("Jh");
+            Card b = new Card("Jh");
+            Assert.Equal(a, b);
+        }
+
+        [Fact]
+        public void hand_equality()
+        {
+            Hand a = new Hand(new HashSet<Card> { new Card("Jh"), new Card("Jc") }, Hand.HandLabel.Pair);
+            Hand b = new Hand(new HashSet<Card> { new Card("Jh"), new Card("Jc") }, Hand.HandLabel.Pair);
+            Assert.Equal(a, b);
+        }
+
         public static IEnumerable<object[]> GetCardsStringAndObject()
         {
             yield return new object[] { "1c", new Card(Face.One, Suit.Clubs) };
@@ -73,8 +89,46 @@ namespace TexasHoldem.Tests
 
         public static IEnumerable<object[]> GetHandsOfDeals()
         {
+            // high card
             yield return new object[] { "Td Jh 9s Kc Ah", new List<Hand> {
-                new Hand(Face.Ace, Hand.HandLabel.HighCard)
+                new Hand(new HashSet<Card> { new Card("Ah") }, Hand.HandLabel.HighCard)
+            } };
+
+            // one pair
+            yield return new object[] { "Td Jh Ts Kc Ah", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("Ah") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> { new Card("Td"), new Card("Ts") }, Hand.HandLabel.Pair)
+            } };
+
+            //two pairs
+            yield return new object[] { "Td Kh Ts Kc Ah", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("Ah") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> { new Card("Kh"), new Card("Kc") }, Hand.HandLabel.Pair),
+                new Hand(new HashSet<Card> { new Card("Td"), new Card("Ts") }, Hand.HandLabel.Pair)
+            } };
+
+            // one three of a kind
+            yield return new object[] { "Td Jh Ts Kc Tc", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("Kc") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> { new Card("Td"), new Card("Ts"), new Card("Tc") }, Hand.HandLabel.ThreeOfAkind)
+            } };
+
+            // one fur of a kind
+            yield return new object[] { "Td Jh Ts Th Tc", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("Jh") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> { new Card("Td"), new Card("Ts"), new Card("Tc"), new Card("Th") }, Hand.HandLabel.FourOfAkind)
+            } };
+
+            // one full house
+            yield return new object[] { "Td Kh Ts Kc Kd", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("Kh"), new Card("Kd"), new Card("Kc") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> {
+                    new Card("Td"),
+                    new Card("Kh"),
+                    new Card("Ts"),
+                    new Card("Kc"),
+                    new Card("Kd")
+                }, Hand.HandLabel.FullHouse),
             } };
         }
 
@@ -83,7 +137,16 @@ namespace TexasHoldem.Tests
         public void hands_of_deal (String dealAsString, List<Hand> expectedHands)
         {
             Deal d = new Deal(dealAsString.Split(' '));
-            Assert.Equal(expectedHands, d.GetHands());
+
+            List<Hand> computedHands = d.GetHands();
+
+            Assert.Equal(expectedHands.Count, computedHands.Count);
+
+            for (int i = 0; i < expectedHands.Count; i++)
+            {
+                Assert.Contains(computedHands[i], expectedHands);
+            }
+
         }
 
     }

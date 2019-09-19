@@ -32,7 +32,8 @@ namespace TexasHoldem
         Spades
     }
 
-    public class Card : IComparable<Card>
+    [Serializable]
+    public class Card : IComparable<Card>, IEquatable<Card>
     {
 
         private static readonly Dictionary<char, Suit> charToSuit
@@ -108,6 +109,13 @@ namespace TexasHoldem
             return this.Face - other.Face;
         }
 
+
+        
+        public bool Equals(Card other)
+        {
+            return this.Face == other.Face && this.Suit == other.Suit;
+        }
+
         override
         public String ToString()
         {
@@ -122,6 +130,11 @@ namespace TexasHoldem
 
             return "" + faceChar + suitChar;
 
+        }
+
+        public override int GetHashCode()
+        {
+            return (int) this.Face ^ (int) this.Suit;
         }
     }
 
