@@ -8,7 +8,7 @@ namespace TexasHoldem
 
     public enum Face
     {
-        One = 1,
+        One = 1, // only used when Ace takes the value of one
         Two = 2,
         Three = 3,
         Four = 4,

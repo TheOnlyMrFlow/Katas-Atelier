@@ -40,13 +40,10 @@ namespace TexasHoldem
 
             List<Hand> hands = new List<Hand>();
 
-            Hand highCardHand = new Hand(
-                new HashSet<Card> (FindHighestCards()), Hand.HandLabel.HighCard
-            );
+            Card[] highCards = FindHighestCards();
 
-            Console.WriteLine(highCardHand);
 
-            hands.Add(highCardHand);
+            hands.Add(new Hand(new HashSet<Card>(highCards), Hand.HandLabel.HighCard));
 
             List<Card[]> pairs = FindMultiples(2);
             List<Card[]> threeOfAKinds = FindMultiples(3);
@@ -69,12 +66,28 @@ namespace TexasHoldem
                     hands.Add(new Hand(new HashSet<Card>(threeOfAKind), Hand.HandLabel.ThreeOfAkind));
             }
 
-            else if (IsFlush())
-                hands.Add(new Hand(new HashSet<Card>(Cards), Hand.HandLabel.Flush));
+            else
+            {
+                ISet<Card> flush = GetFlush();
+                ISet<Card> straight = GetStraight();
 
-            else if (IsStraight())
-                //todo
+                if (flush != null && straight != null)
+                {
+                    if (straight.Max().Face == Face.Ace)
+                        hands.Add(new Hand(straight, Hand.HandLabel.RoyalFlush));
 
+                    else
+                        hands.Add(new Hand(straight, Hand.HandLabel.StraightFlush));
+                }
+
+                else if (straight != null)
+                    hands.Add(new Hand(straight, Hand.HandLabel.Straight));
+
+                else if (flush != null)
+                    hands.Add(new Hand(flush, Hand.HandLabel.Flush));
+
+
+            }
 
             return hands;
 
@@ -95,21 +108,62 @@ namespace TexasHoldem
                .ToList();
         }
 
-        private bool IsFlush()
+        private HashSet<Card> GetFlush()
         {
+            bool isFlush = true;
             Suit s = Cards[0].Suit;
             for(int i = 1; i < Cards.Count; i++)
             {
                 if (Cards[i].Suit != s)
+                    return null;
+            }
+            return new HashSet<Card>(Cards);
+        }
+
+        private HashSet<Card> GetStraight()
+        {
+            
+            if (IsStraight(Cards))
+                return new HashSet<Card>(Cards);
+
+            int lastCardIndex = Cards.Count - 1;
+            if (Cards[lastCardIndex].Face == Face.Ace)
+            {
+                Card aceCard = Cards[lastCardIndex];
+                List<Card> cardsWithAceFirst = new List<Card>();
+                cardsWithAceFirst.Add(new Card(Face.One, aceCard.Suit));
+                cardsWithAceFirst.AddRange(Cards.GetRange(0, 4));
+
+                if (IsStraight(cardsWithAceFirst))
+                    return new HashSet<Card>(cardsWithAceFirst);
+               
+            }
+
+            return null;
+
+           
+
+
+        }
+
+        private static bool IsStraight(List<Card> cards)
+        {
+
+            for (int i = 0; i < cards.Count - 1; i++)
+            {
+                if (i == 0 && cards[0].Face == Face.Ace) // if first card is an ace
+                {
+                    if (cards[1].Face != Face.Two)
+                        return false;
+
+                    continue;
+                }
+
+                else if (cards[i + 1].Face != cards[i].Face + 1)
                     return false;
             }
             return true;
-        }
 
-        private bool IsStraight()
-        {
-            // todo, le test est deja fait
-            return true;
         }
 
     }

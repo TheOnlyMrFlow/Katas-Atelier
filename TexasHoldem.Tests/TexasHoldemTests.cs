@@ -14,8 +14,8 @@ namespace TexasHoldem.Tests
         }
         public static IEnumerable<object[]> GetCardsToCompare()
         {
-            yield return new object[] { new Card(Face.One, Suit.Clubs), new Card(Face.Ace, Suit.Diamonds), Comparison.Lesser };
-            yield return new object[] { new Card(Face.Two, Suit.Spades), new Card(Face.One, Suit.Diamonds), Comparison.Greater };
+            yield return new object[] { new Card(Face.Two, Suit.Clubs), new Card(Face.Ace, Suit.Diamonds), Comparison.Lesser };
+            yield return new object[] { new Card(Face.Three, Suit.Spades), new Card(Face.Two, Suit.Diamonds), Comparison.Greater };
             yield return new object[] { new Card(Face.Jack, Suit.Spades), new Card(Face.Jack, Suit.Clubs), Comparison.Equal };
         }
 
@@ -67,7 +67,7 @@ namespace TexasHoldem.Tests
 
         public static IEnumerable<object[]> GetCardsStringAndObject()
         {
-            yield return new object[] { "1c", new Card(Face.One, Suit.Clubs) };
+            yield return new object[] { "2c", new Card(Face.Two, Suit.Clubs) };
             yield return new object[] { "Ad", new Card(Face.Ace, Suit.Diamonds) };
             yield return new object[] { "Jh", new Card(Face.Jack, Suit.Hearts) };
             
@@ -86,7 +86,7 @@ namespace TexasHoldem.Tests
         {
             Assert.Throws<Exception>(() =>
             {
-                new Card("1p");
+                new Card("2p");
             });
 
             Assert.Throws<Exception>(() =>
@@ -141,11 +141,11 @@ namespace TexasHoldem.Tests
             } };
 
             // one basic flush
-            yield return new object[] { "Td Kd 1d 3d 7d", new List<Hand> {
+            yield return new object[] { "Td Kd 2d 3d 7d", new List<Hand> {
                 new Hand(new HashSet<Card> { new Card("Kd") }, Hand.HandLabel.HighCard),
                 new Hand(new HashSet<Card> {
                     new Card("Td"),
-                    new Card("1d"),
+                    new Card("2d"),
                     new Card("3d"),
                     new Card("Kd"),
                     new Card("7d")
@@ -164,6 +164,44 @@ namespace TexasHoldem.Tests
                     new Card("7c")
                 }, Hand.HandLabel.Straight),
             } };
+
+            // one basic straight that starts with an ace
+            yield return new object[] { "Ad 2c 3s 4h 5c", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("Ad") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> {
+                    new Card("3s"),
+                    new Card("5c"),
+                    new Card("1d"),
+                    new Card("4h"),
+                    new Card("2c")
+                }, Hand.HandLabel.Straight),
+            } };
+
+            // one straight flush
+            yield return new object[] { "3d 4d 5d 6d 7d", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("7d") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> {
+                    new Card("3d"),
+                    new Card("5d"),
+                    new Card("6d"),
+                    new Card("4d"),
+                    new Card("7d")
+                }, Hand.HandLabel.StraightFlush),
+            } };
+
+            // one royal flush
+            yield return new object[] { "Qd Ad Kd Td Jd", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("Ad") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> {
+                    new Card("Qd"),
+                    new Card("Kd"),
+                    new Card("Jd"),
+                    new Card("Ad"),
+                    new Card("Td")
+                }, Hand.HandLabel.RoyalFlush),
+            } };
+
+
         }
 
         [Theory]
