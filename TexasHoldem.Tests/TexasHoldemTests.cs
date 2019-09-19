@@ -56,6 +56,15 @@ namespace TexasHoldem.Tests
             Assert.Equal(a, b);
         }
 
+        [Fact]
+        public void cards_sorted()
+        {
+            Deal d = new Deal(new String[] { "Kh", "Td", "Ah", "Th", "8d" });
+
+            for (int i = 0; i < d.Cards.Count - 1; i++)
+                Assert.True(d.Cards[i].CompareTo(d.Cards[i + 1]) <= 0);
+        }
+
         public static IEnumerable<object[]> GetCardsStringAndObject()
         {
             yield return new object[] { "1c", new Card(Face.One, Suit.Clubs) };
@@ -129,6 +138,31 @@ namespace TexasHoldem.Tests
                     new Card("Kc"),
                     new Card("Kd")
                 }, Hand.HandLabel.FullHouse),
+            } };
+
+            // one basic flush
+            yield return new object[] { "Td Kd 1d 3d 7d", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("Kd") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> {
+                    new Card("Td"),
+                    new Card("1d"),
+                    new Card("3d"),
+                    new Card("Kd"),
+                    new Card("7d")
+                }, Hand.HandLabel.Flush),
+            } };
+
+
+            // one basic straight
+            yield return new object[] { "3s 4h 5c 6d 7c", new List<Hand> {
+                new Hand(new HashSet<Card> { new Card("7c") }, Hand.HandLabel.HighCard),
+                new Hand(new HashSet<Card> {
+                    new Card("3s"),
+                    new Card("5c"),
+                    new Card("6d"),
+                    new Card("4h"),
+                    new Card("7c")
+                }, Hand.HandLabel.Straight),
             } };
         }
 

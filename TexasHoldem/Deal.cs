@@ -31,6 +31,8 @@ namespace TexasHoldem
                 suitsOccurences[c.Suit] = currentSuitOccurence + 1;
 
             }
+
+            Cards.Sort();
         }
 
         public List<Hand> GetHands()
@@ -58,7 +60,7 @@ namespace TexasHoldem
                 hands.Add(new Hand(new HashSet<Card>(fourOfAKinds[0]), Hand.HandLabel.FourOfAkind));
 
 
-            else
+            else if (pairs.Count > 0 || threeOfAKinds.Count > 0)
             {
                 foreach (Card[] pair in pairs)
                     hands.Add(new Hand(new HashSet<Card>(pair), Hand.HandLabel.Pair));
@@ -66,6 +68,12 @@ namespace TexasHoldem
                 foreach (Card[] threeOfAKind in threeOfAKinds)
                     hands.Add(new Hand(new HashSet<Card>(threeOfAKind), Hand.HandLabel.ThreeOfAkind));
             }
+
+            else if (IsFlush())
+                hands.Add(new Hand(new HashSet<Card>(Cards), Hand.HandLabel.Flush));
+
+            else if (IsStraight())
+                //todo
 
 
             return hands;
@@ -85,6 +93,23 @@ namespace TexasHoldem
                .GroupBy(c => c.Face)
                .Select(grp => grp.ToArray())
                .ToList();
+        }
+
+        private bool IsFlush()
+        {
+            Suit s = Cards[0].Suit;
+            for(int i = 1; i < Cards.Count; i++)
+            {
+                if (Cards[i].Suit != s)
+                    return false;
+            }
+            return true;
+        }
+
+        private bool IsStraight()
+        {
+            // todo, le test est deja fait
+            return true;
         }
 
     }
