@@ -48,12 +48,272 @@ namespace TexasHoldem.Tests
             Assert.Equal(a, b);
         }
 
-        [Fact]
-        public void hand_equality()
+
+        public static IEnumerable<object[]> GetCardSetsToCompare()
         {
-            Hand a = new Hand(new HashSet<Card> { new Card("Jh"), new Card("Jc") }, Hand.HandLabel.Pair);
-            Hand b = new Hand(new HashSet<Card> { new Card("Jh"), new Card("Jc") }, Hand.HandLabel.Pair);
-            Assert.Equal(a, b);
+            yield return new object[] {
+                                    new Card ("Ah"),
+                                    new Card ("Th"),
+                                    Comparison.Greater
+            };
+
+            yield return new object[] {
+                                    CardSet.BuildPair( new Card[] {
+                                        new Card("2d"),
+                                        new Card("2s")
+                                    }),
+                                    CardSet.BuildPair(new Card[] {
+                                        new Card("4s"),
+                                        new Card("4d")
+                                    }),
+                                    Comparison.Lesser };
+
+            yield return new object[] {
+                                    CardSet.BuildPair( new Card[] {
+                                        new Card("5d"),
+                                        new Card("5s")
+                                    }),
+                                    CardSet.BuildPair(new Card[] {
+                                        new Card("4s"),
+                                        new Card("4d")
+                                    }),
+                                    Comparison.Greater };
+
+            yield return new object[] {
+                                    CardSet.BuildPair( new Card[] {
+                                        new Card("2d"),
+                                        new Card("2s")
+                                    }),
+                                    CardSet.BuildPair(new Card[] {
+                                        new Card("2h"),
+                                        new Card("2c")
+                                    }),
+                                    Comparison.Equal };
+
+            yield return new object[] {
+                                    CardSet.BuildFullHouse( 
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("3h"),
+                                            new Card("3c"),
+                                            new Card("3d")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("2h"),
+                                            new Card("2c"),
+
+                                        })
+                                    ),
+                                   CardSet.BuildFullHouse(
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("3h"),
+                                            new Card("3c"),
+                                            new Card("3s")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("2h"),
+                                            new Card("2c"),
+
+                                        })
+                                    ),
+                                    Comparison.Equal };
+
+            yield return new object[] {
+                                    CardSet.BuildFullHouse(
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("3h"),
+                                            new Card("3c"),
+                                            new Card("3d")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("2h"),
+                                            new Card("2c"),
+
+                                        })
+                                    ),
+                                   CardSet.BuildFullHouse(
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("4h"),
+                                            new Card("4c"),
+                                            new Card("4s")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("2h"),
+                                            new Card("2c"),
+
+                                        })
+                                    ),
+                                    Comparison.Lesser };
+
+            yield return new object[] {
+                                    CardSet.BuildFullHouse(
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("5h"),
+                                            new Card("5c"),
+                                            new Card("5d")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("2h"),
+                                            new Card("2c"),
+
+                                        })
+                                    ),
+                                   CardSet.BuildFullHouse(
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("3h"),
+                                            new Card("3c"),
+                                            new Card("3s")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("2h"),
+                                            new Card("2c"),
+
+                                        })
+                                    ),
+                                    Comparison.Greater };
+
+            yield return new object[] {
+                                    CardSet.BuildFullHouse(
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("3h"),
+                                            new Card("3c"),
+                                            new Card("3d")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("4h"),
+                                            new Card("4c"),
+
+                                        })
+                                    ),
+                                   CardSet.BuildFullHouse(
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("3h"),
+                                            new Card("3c"),
+                                            new Card("3s")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("2h"),
+                                            new Card("2c"),
+
+                                        })
+                                    ),
+                                    Comparison.Greater };
+
+            yield return new object[] {
+                                    CardSet.BuildFullHouse(
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("3h"),
+                                            new Card("3c"),
+                                            new Card("3d")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("4h"),
+                                            new Card("4c"),
+
+                                        })
+                                    ),
+                                   CardSet.BuildFullHouse(
+                                        CardSet.BuildThreeOfAKind( new Card[] {
+                                            new Card("3h"),
+                                            new Card("3c"),
+                                            new Card("3s")
+                                        }),
+                                        CardSet.BuildPair( new Card[] {
+                                            new Card("5h"),
+                                            new Card("5c"),
+
+                                        })
+                                    ),
+                                    Comparison.Lesser };
+
+            yield return new object[] {
+                                    CardSet.BuildFlush( new Card[] {
+                                        new Card("2d"),
+                                        new Card("4d"),
+                                        new Card("7d"),
+                                        new Card("9d"),
+                                        new Card("Ad")
+                                    }),
+                                    CardSet.BuildStraight(new Card[] {
+                                        new Card("3s"),
+                                        new Card("4d"),
+                                        new Card("5h"),
+                                        new Card("6d"),
+                                        new Card("7d")
+                                    }),
+                                    Comparison.Greater };
+
+            yield return new object[] {
+                                    CardSet.BuildStraight( new Card[] {
+                                        new Card("2s"),
+                                        new Card("3d"),
+                                        new Card("4h"),
+                                        new Card("5d"),
+                                        new Card("6s")
+                                    }),
+                                    CardSet.BuildStraight(new Card[] {
+                                        new Card("3s"),
+                                        new Card("4d"),
+                                        new Card("5h"),
+                                        new Card("6d"),
+                                        new Card("7d")
+                                    }),
+                                    Comparison.Lesser };
+
+            yield return new object[] {
+                                    CardSet.BuildStraight( new Card[] {
+                                        new Card("4s"),
+                                        new Card("5d"),
+                                        new Card("6h"),
+                                        new Card("7c"),
+                                        new Card("8s")
+                                    }),
+                                    CardSet.BuildStraight(new Card[] {
+                                        new Card("3s"),
+                                        new Card("4d"),
+                                        new Card("5h"),
+                                        new Card("6d"),
+                                        new Card("7d")
+                                    }),
+                                    Comparison.Greater };
+
+            yield return new object[] {
+                                    CardSet.BuildStraight( new Card[] {
+                                        new Card("3d"),
+                                        new Card("4s"),
+                                        new Card("5c"),
+                                        new Card("6s"),
+                                        new Card("7h")
+                                    }),
+                                    CardSet.BuildStraight(new Card[] {
+                                        new Card("3s"),
+                                        new Card("4d"),
+                                        new Card("5h"),
+                                        new Card("6d"),
+                                        new Card("7d")
+                                    }),
+                                    Comparison.Equal };
+
+            
+
+        }
+
+        [Theory]
+        [MemberData(nameof(GetCardSetsToCompare))]
+        public void cardset_comparison(CardSet a, CardSet b, Comparison comparison)
+        {
+            switch (comparison)
+            {
+                case Comparison.Greater:
+                    Assert.True(a.CompareTo(b) > 0);
+                    break;
+                case Comparison.Lesser:
+                    Assert.True(a.CompareTo(b) < 0);
+                    break;
+                case Comparison.Equal:
+                    Assert.True(a.CompareTo(b) == 0);
+                    break;
+
+            }
         }
 
         [Fact]
@@ -96,130 +356,130 @@ namespace TexasHoldem.Tests
         }
 
 
-        public static IEnumerable<object[]> GetHandsOfDeals()
-        {
-            // high card
-            yield return new object[] { "Td Jh 9s Kc Ah", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("Ah") }, Hand.HandLabel.HighCard)
-            } };
+        //public static IEnumerable<object[]> GetHandsOfDeals()
+        //{
+        //    // high card
+        //    yield return new object[] { "Td Jh 9s Kc Ah", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("Ah") }, CardSet.Label.SingleCard)
+        //    } };
 
-            // one pair
-            yield return new object[] { "Td Jh Ts Kc Ah", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("Ah") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> { new Card("Td"), new Card("Ts") }, Hand.HandLabel.Pair)
-            } };
+        //    // one pair
+        //    yield return new object[] { "Td Jh Ts Kc Ah", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("Ah") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> { new Card("Td"), new Card("Ts") }, CardSet.Label.Pair)
+        //    } };
 
-            //two pairs
-            yield return new object[] { "Td Kh Ts Kc Ah", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("Ah") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> { new Card("Kh"), new Card("Kc") }, Hand.HandLabel.Pair),
-                new Hand(new HashSet<Card> { new Card("Td"), new Card("Ts") }, Hand.HandLabel.Pair)
-            } };
+        //    //two pairs
+        //    yield return new object[] { "Td Kh Ts Kc Ah", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("Ah") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> { new Card("Kh"), new Card("Kc") }, CardSet.Label.Pair),
+        //        new CardSet(new HashSet<Card> { new Card("Td"), new Card("Ts") }, CardSet.Label.Pair)
+        //    } };
 
-            // one three of a kind
-            yield return new object[] { "Td Jh Ts Kc Tc", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("Kc") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> { new Card("Td"), new Card("Ts"), new Card("Tc") }, Hand.HandLabel.ThreeOfAkind)
-            } };
+        //    // one three of a kind
+        //    yield return new object[] { "Td Jh Ts Kc Tc", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("Kc") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> { new Card("Td"), new Card("Ts"), new Card("Tc") }, CardSet.Label.ThreeOfAkind)
+        //    } };
 
-            // one fur of a kind
-            yield return new object[] { "Td Jh Ts Th Tc", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("Jh") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> { new Card("Td"), new Card("Ts"), new Card("Tc"), new Card("Th") }, Hand.HandLabel.FourOfAkind)
-            } };
+        //    // one fur of a kind
+        //    yield return new object[] { "Td Jh Ts Th Tc", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("Jh") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> { new Card("Td"), new Card("Ts"), new Card("Tc"), new Card("Th") }, CardSet.Label.FourOfAkind)
+        //    } };
 
-            // one full house
-            yield return new object[] { "Td Kh Ts Kc Kd", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("Kh"), new Card("Kd"), new Card("Kc") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> {
-                    new Card("Td"),
-                    new Card("Kh"),
-                    new Card("Ts"),
-                    new Card("Kc"),
-                    new Card("Kd")
-                }, Hand.HandLabel.FullHouse),
-            } };
+        //    // one full house
+        //    yield return new object[] { "Td Kh Ts Kc Kd", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("Kh"), new Card("Kd"), new Card("Kc") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> {
+        //            new Card("Td"),
+        //            new Card("Kh"),
+        //            new Card("Ts"),
+        //            new Card("Kc"),
+        //            new Card("Kd")
+        //        }, CardSet.Label.FullHouse),
+        //    } };
 
-            // one basic flush
-            yield return new object[] { "Td Kd 2d 3d 7d", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("Kd") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> {
-                    new Card("Td"),
-                    new Card("2d"),
-                    new Card("3d"),
-                    new Card("Kd"),
-                    new Card("7d")
-                }, Hand.HandLabel.Flush),
-            } };
-
-
-            // one basic straight
-            yield return new object[] { "3s 4h 5c 6d 7c", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("7c") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> {
-                    new Card("3s"),
-                    new Card("5c"),
-                    new Card("6d"),
-                    new Card("4h"),
-                    new Card("7c")
-                }, Hand.HandLabel.Straight),
-            } };
-
-            // one basic straight that starts with an ace
-            yield return new object[] { "Ad 2c 3s 4h 5c", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("Ad") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> {
-                    new Card("3s"),
-                    new Card("5c"),
-                    new Card("1d"),
-                    new Card("4h"),
-                    new Card("2c")
-                }, Hand.HandLabel.Straight),
-            } };
-
-            // one straight flush
-            yield return new object[] { "3d 4d 5d 6d 7d", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("7d") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> {
-                    new Card("3d"),
-                    new Card("5d"),
-                    new Card("6d"),
-                    new Card("4d"),
-                    new Card("7d")
-                }, Hand.HandLabel.StraightFlush),
-            } };
-
-            // one royal flush
-            yield return new object[] { "Qd Ad Kd Td Jd", new List<Hand> {
-                new Hand(new HashSet<Card> { new Card("Ad") }, Hand.HandLabel.HighCard),
-                new Hand(new HashSet<Card> {
-                    new Card("Qd"),
-                    new Card("Kd"),
-                    new Card("Jd"),
-                    new Card("Ad"),
-                    new Card("Td")
-                }, Hand.HandLabel.RoyalFlush),
-            } };
+        //    // one basic flush
+        //    yield return new object[] { "Td Kd 2d 3d 7d", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("Kd") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> {
+        //            new Card("Td"),
+        //            new Card("2d"),
+        //            new Card("3d"),
+        //            new Card("Kd"),
+        //            new Card("7d")
+        //        }, CardSet.Label.Flush),
+        //    } };
 
 
-        }
+        //    // one basic straight
+        //    yield return new object[] { "3s 4h 5c 6d 7c", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("7c") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> {
+        //            new Card("3s"),
+        //            new Card("5c"),
+        //            new Card("6d"),
+        //            new Card("4h"),
+        //            new Card("7c")
+        //        }, CardSet.Label.Straight),
+        //    } };
 
-        [Theory]
-        [MemberData(nameof(GetHandsOfDeals))]
-        public void hands_of_deal (String dealAsString, List<Hand> expectedHands)
-        {
-            Deal d = new Deal(dealAsString.Split(' '));
+        //    // one basic straight that starts with an ace
+        //    yield return new object[] { "Ad 2c 3s 4h 5c", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("Ad") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> {
+        //            new Card("3s"),
+        //            new Card("5c"),
+        //            new Card("1d"),
+        //            new Card("4h"),
+        //            new Card("2c")
+        //        }, CardSet.Label.Straight),
+        //    } };
 
-            List<Hand> computedHands = d.GetHands();
+        //    // one straight flush
+        //    yield return new object[] { "3d 4d 5d 6d 7d", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("7d") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> {
+        //            new Card("3d"),
+        //            new Card("5d"),
+        //            new Card("6d"),
+        //            new Card("4d"),
+        //            new Card("7d")
+        //        }, CardSet.Label.StraightFlush),
+        //    } };
 
-            Assert.Equal(expectedHands.Count, computedHands.Count);
+        //    // one royal flush
+        //    yield return new object[] { "Qd Ad Kd Td Jd", new List<CardSet> {
+        //        new CardSet(new HashSet<Card> { new Card("Ad") }, CardSet.Label.SingleCard),
+        //        new CardSet(new HashSet<Card> {
+        //            new Card("Qd"),
+        //            new Card("Kd"),
+        //            new Card("Jd"),
+        //            new Card("Ad"),
+        //            new Card("Td")
+        //        }, CardSet.Label.RoyalFlush),
+        //    } };
 
-            for (int i = 0; i < expectedHands.Count; i++)
-            {
-                Assert.Contains(computedHands[i], expectedHands);
-            }
 
-        }
+        //}
+
+        //[Theory]
+        //[MemberData(nameof(GetHandsOfDeals))]
+        //public void hands_of_deal (String dealAsString, List<CardSet> expectedHands)
+        //{
+        //    Deal d = new Deal(dealAsString.Split(' '));
+
+        //    List<CardSet> computedHands = d.GetHand();
+
+        //    Assert.Equal(expectedHands.Count, computedHands.Count);
+
+        //    for (int i = 0; i < expectedHands.Count; i++)
+        //    {
+        //        Assert.Contains(computedHands[i], expectedHands);
+        //    }
+
+        //}
 
     }
 }

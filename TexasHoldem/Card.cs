@@ -33,7 +33,7 @@ namespace TexasHoldem
     }
 
     [Serializable]
-    public class Card : IComparable<Card>, IEquatable<Card>
+    public class Card : CardSet, IComparable<Card>, IComparable<CardSet>, IEquatable<Card>
     {
 
         private static readonly Dictionary<char, Suit> charToSuit
@@ -75,12 +75,14 @@ namespace TexasHoldem
         public Suit Suit { get; set; }
         
         public Card(Face face, Suit suit)
+            :base(CardSetLabel.SingleCard, new CardSet[0])
         {
             this.Face = face;
             this.Suit = suit;
         }
 
         public Card(String cardAsString)
+            : base(CardSetLabel.SingleCard, new CardSet[0])
         {
             if (cardAsString.Length != 2)
                 throw new Exception("A card is represented by 2 characters");
@@ -109,8 +111,23 @@ namespace TexasHoldem
             return this.Face - other.Face;
         }
 
+        public int CompareTo(CardSet other)
+        {
+            var otherAsCard = other as Card;
 
-        
+            if (otherAsCard != null)
+            {
+                return this.CompareTo(otherAsCard);
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
+
+
+
         public bool Equals(Card other)
         {
             return this.Face == other.Face && this.Suit == other.Suit;

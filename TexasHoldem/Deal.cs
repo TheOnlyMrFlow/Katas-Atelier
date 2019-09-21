@@ -13,11 +13,16 @@ namespace TexasHoldem
         private Dictionary<Face, int> facesOccurences = new Dictionary<Face, int>();
         private Dictionary<Suit, int> suitsOccurences = new Dictionary<Suit, int>();
 
-
         public Deal(string[] cardsAsStrings)
         {
+            int n = 0;
             foreach (String cardString in cardsAsStrings)
             {
+                n++;
+
+                if (n > 6)
+                    throw new Exception("Cannot have more than 7 cards in texas holdem");
+
                 Card c = new Card(cardString);
                 this.Cards.Add(c);
 
@@ -35,80 +40,100 @@ namespace TexasHoldem
             Cards.Sort();
         }
 
-        public List<Hand> GetHands()
+        //public CardSet GetHand()
+        //{
+
+        //    // find all straights
+        //    // find all flush
+        //    // find all pairs
+        //    // find all three of a kind
+        //    // find all four of a kind
+
+        //    // is there any flush ?
+        //        // yes -> is there any straight ?
+        //            // yes -> does a flush and a straight match together ?
+        //                // yes-> do they end with an ace ?
+        //                        // yes -> return royalflush
+        //                        // no -> return straight flush
+            
+        //    // is there any four of a kind ?
+        //        // yes -> return four of a kind + 5th card
+
+        //    // is there any three of a kind ?
+        //        // yes -> is there any pair ?
+        //            // yes -> return fullhouse made of highest of both
+
+        //    // is there any flush ?
+        //        // yes -> return flush
+
+        //    // is there any straight ?
+        //        // yes -> return straight
+
+        //    // is there any three of a kind ?
+        //        // yes -> return three of a kind + 2 highest of the cards left
+
+        //    // is there any pair ?
+        //        // yes -> is there another ?
+        //            // yes -> return two pairs + highest of the cards that are left
+        //            // no -> return pair + 3 highest of the cards left
+
+        //    // return 5 highest cards
+
+        //}
+
+        private static Card[] FindNHighest(ICollection<Card> cards, int n)
         {
-
-            List<Hand> hands = new List<Hand>();
-
-            Card[] highCards = FindHighestCards();
-
-
-            hands.Add(new Hand(new HashSet<Card>(highCards), Hand.HandLabel.HighCard));
-
-            List<Card[]> pairs = FindMultiples(2);
-            List<Card[]> threeOfAKinds = FindMultiples(3);
-            List<Card[]> fourOfAKinds = FindMultiples(4);
-
-
-            if (pairs.Count == 1 && threeOfAKinds.Count == 1)
-                hands.Add(new Hand(new HashSet<Card>(Cards), Hand.HandLabel.FullHouse));
-
-            else if (fourOfAKinds.Count == 1)
-                hands.Add(new Hand(new HashSet<Card>(fourOfAKinds[0]), Hand.HandLabel.FourOfAkind));
-
-
-            else if (pairs.Count > 0 || threeOfAKinds.Count > 0)
-            {
-                foreach (Card[] pair in pairs)
-                    hands.Add(new Hand(new HashSet<Card>(pair), Hand.HandLabel.Pair));
-
-                foreach (Card[] threeOfAKind in threeOfAKinds)
-                    hands.Add(new Hand(new HashSet<Card>(threeOfAKind), Hand.HandLabel.ThreeOfAkind));
-            }
-
-            else
-            {
-                ISet<Card> flush = GetFlush();
-                ISet<Card> straight = GetStraight();
-
-                if (flush != null && straight != null)
-                {
-                    if (straight.Max().Face == Face.Ace)
-                        hands.Add(new Hand(straight, Hand.HandLabel.RoyalFlush));
-
-                    else
-                        hands.Add(new Hand(straight, Hand.HandLabel.StraightFlush));
-                }
-
-                else if (straight != null)
-                    hands.Add(new Hand(straight, Hand.HandLabel.Straight));
-
-                else if (flush != null)
-                    hands.Add(new Hand(flush, Hand.HandLabel.Flush));
-
-
-            }
-
-            return hands;
-
+            return cards.ToList().OrderByDescending(c => c).ToList().GetRange(0, n).ToArray();
         }
 
-        private Card[] FindHighestCards()
+        private List<Card[]> FindTuplesOfSize(int n)
         {
-            Card max = Cards.Max();
-            return Cards.Where(c => c.CompareTo(max) == 0).ToArray();
-        }
 
-        private List<Card[]> FindMultiples(int n)
-        {
             return Cards
-               .Where(c => facesOccurences[c.Face] == n)
-               .GroupBy(c => c.Face)
-               .Select(grp => grp.ToArray())
-               .ToList();
+                    .Where(c => facesOccurences[c.Face] == n)
+                    .GroupBy(c => c.Face)
+                    .Select(grp => grp.ToArray())
+                    .ToList();
+
         }
 
-        private HashSet<Card> GetFlush()
+        private CardSet[] FindAllPairs()
+        {
+            List<Card[]> pairs = FindTuplesOfSize(2);
+
+            CardSet[] ret = new CardSet[pairs.Count];
+
+            for (int i = 0; i < pairs.Count; i++)
+                ret[i] = CardSet.BuildPair(pairs[i]);
+
+            return ret;
+        }
+
+        private CardSet[] FindAllThreeOfAKind()
+        {
+            List<Card[]> triples = FindTuplesOfSize(3);
+
+            CardSet[] ret = new CardSet[triples.Count];
+
+            for (int i = 0; i < triples.Count; i++)
+                ret[i] = CardSet.BuildThreeOfAKind(triples[i]);
+
+            return ret;
+        }
+
+        private CardSet FindFourOfAKind()
+        {
+            List<Card[]> quadruples = FindTuplesOfSize(3);
+
+            if (quadruples.Count == 0)
+                return null;
+
+            return CardSet.BuildFourOfAKind(quadruples[0]);
+
+        }
+
+
+        private HashSet<Face> GetFlush()
         {
             bool isFlush = true;
             Suit s = Cards[0].Suit;
@@ -117,14 +142,14 @@ namespace TexasHoldem
                 if (Cards[i].Suit != s)
                     return null;
             }
-            return new HashSet<Card>(Cards);
+            return CardColelctionToFaceSet(Cards);
         }
 
-        private HashSet<Card> GetStraight()
+        private HashSet<Face> GetStraight()
         {
-            
+
             if (IsStraight(Cards))
-                return new HashSet<Card>(Cards);
+                return CardColelctionToFaceSet(Cards);
 
             int lastCardIndex = Cards.Count - 1;
             if (Cards[lastCardIndex].Face == Face.Ace)
@@ -135,14 +160,11 @@ namespace TexasHoldem
                 cardsWithAceFirst.AddRange(Cards.GetRange(0, 4));
 
                 if (IsStraight(cardsWithAceFirst))
-                    return new HashSet<Card>(cardsWithAceFirst);
+                    return CardColelctionToFaceSet(cardsWithAceFirst);
                
             }
 
             return null;
-
-           
-
 
         }
 
@@ -165,6 +187,12 @@ namespace TexasHoldem
             return true;
 
         }
+
+        private static HashSet<Face> CardColelctionToFaceSet(ICollection<Card> cards)
+        {
+            return new HashSet<Face> (cards.Select(c => c.Face));
+        }
+
 
     }
 }
