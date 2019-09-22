@@ -1,0 +1,14 @@
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\bin\Debug\netcoreapp2.2\TexasHoldem.App.deps.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\bin\Debug\netcoreapp2.2\TexasHoldem.App.runtimeconfig.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\bin\Debug\netcoreapp2.2\TexasHoldem.App.runtimeconfig.dev.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\bin\Debug\netcoreapp2.2\TexasHoldem.App.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\bin\Debug\netcoreapp2.2\TexasHoldem.App.pdb
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\bin\Debug\netcoreapp2.2\TexasHoldem.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\bin\Debug\netcoreapp2.2\TexasHoldem.pdb
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\obj\Debug\netcoreapp2.2\TexasHoldem.App.csprojAssemblyReference.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\obj\Debug\netcoreapp2.2\TexasHoldem.App.csproj.CoreCompileInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\obj\Debug\netcoreapp2.2\TexasHoldem.App.AssemblyInfoInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\obj\Debug\netcoreapp2.2\TexasHoldem.App.AssemblyInfo.cs
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\obj\Debug\netcoreapp2.2\TexasHoldem.App.csproj.CopyComplete
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\obj\Debug\netcoreapp2.2\TexasHoldem.App.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\TexasHoldem.App\obj\Debug\netcoreapp2.2\TexasHoldem.App.pdb

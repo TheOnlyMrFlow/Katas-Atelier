@@ -7,13 +7,23 @@ namespace TexasHoldem
     public class Hand : IComparable<Hand>
     {
 
-        private List<CardSet> CardSets = new List<CardSet>();
-        private HashSet<Card> AllCards = new HashSet<Card>();
+        public static Hand FoldedHand()
+        {
+            Hand h = new Hand();
+            h.folded = true;
+            return h;
+        }
 
-        
+        public readonly List<CardSet> CardSets = new List<CardSet>();
+        public readonly HashSet<Card> AllCards = new HashSet<Card>();
+
+        public bool folded { get; private set; }
+
+        private Hand() { }
         
         public Hand(IEnumerable<CardSet> sets) 
         {
+            folded = false;
 
             foreach(CardSet set in sets)
                 AllCards.UnionWith(set.GetAllCards());
@@ -29,6 +39,12 @@ namespace TexasHoldem
 
         public int CompareTo(Hand other)
         {
+            if (folded)
+                return other.folded ? 0 : -1;
+
+            else if (other.folded)
+                return 1;
+
             CardSets.Sort();
             other.CardSets.Sort();
             int comparison;

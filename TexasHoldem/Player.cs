@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TexasHoldem
 {
-    public class Player
+    public class Player : IComparable<Player>
     {
 
         public ISet<Card> Cards { get; private set; } = new HashSet<Card>();
@@ -39,10 +39,11 @@ namespace TexasHoldem
 
         }
 
-        public Hand GetHand(out HashSet<Card> unused)
+        public Hand GetHand()
         {
 
-            unused = new HashSet<Card>();
+            if (Cards.Count < 7)
+                return Hand.FoldedHand();
 
             CardSet[] straights = FindAllStraights();
             CardSet[] flushes = FindAllFlushes();
@@ -103,17 +104,21 @@ namespace TexasHoldem
 
             sets.AddRange(Cards.Except(usedCards).OrderByDescending(c => c).Take(missingCardAmount));
 
-            unused.UnionWith(Cards);
-            foreach (CardSet set in sets)
-                unused.ExceptWith(set.GetAllCards());
-
-
             return new Hand(sets);
         }
 
-        private static Card[] FindNHighest(ICollection<Card> cards, int n)
+        public Hand GetHand(out HashSet<Card> unused)
         {
-            return cards.ToList().OrderByDescending(c => c).ToList().GetRange(0, n).ToArray();
+            Hand h = GetHand();
+
+            unused = new HashSet<Card>(Cards.Except(h.AllCards));
+
+            return h;
+        }
+
+        public int CompareTo(Player other)
+        {
+            return GetHand().CompareTo(other.GetHand());
         }
 
         private List<Card[]> FindTuplesOfSize(int n)
@@ -165,7 +170,8 @@ namespace TexasHoldem
 
         private CardSet[] FindAllFlushes()
         {
-            var maxSuit = suitsOccurences.Max((kv) => kv.Key);
+            // suitsOccurences.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+            var maxSuit = suitsOccurences.Aggregate((x, y) => x.Value > y.Value ? x : y).Key; ;
             if (suitsOccurences[maxSuit] < 5)
                 return new CardSet[0];
 

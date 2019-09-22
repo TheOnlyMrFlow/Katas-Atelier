@@ -147,11 +147,11 @@ namespace TexasHoldem
                     return asCard.CompareTo(otherAsCard);
 
                 else
-                    return asCard.CompareTo(other);
+                    return -1;
             }
 
             else if (otherAsCard != null)
-                return this.CompareTo(other);
+                return this.CompareTo(otherAsCard);
 
 
             if (Label > other.Label)

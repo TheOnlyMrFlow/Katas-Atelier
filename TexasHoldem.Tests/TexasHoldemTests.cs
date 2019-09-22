@@ -429,7 +429,35 @@ namespace TexasHoldem.Tests
                                             )
                                         }
                                     ),
-                                    new HashSet<Card>()
+                                    new HashSet<Card>
+                                    {
+                                        new Card("3c"),
+                                        new Card("6d")
+                                    }
+            };
+
+
+            yield return new object[] {
+                                    "4d 2d Ks Kd 9d 3d 6d",
+                                    new Hand(
+                                        new CardSet[] {
+                                            CardSet.BuildFlush(
+                                                new Card[]
+                                                    {
+                                                        new Card("9d"),
+                                                        new Card("3d"),
+                                                        new Card("6d"),
+                                                        new Card("Kd"),
+                                                        new Card("4d")
+                                                    }
+                                            )
+                                        }
+                                    ),
+                                     new HashSet<Card>
+                                    {
+                                        new Card("2d"),
+                                        new Card("Ks")
+                                    }
             };
 
             yield return new object[] {
@@ -448,7 +476,11 @@ namespace TexasHoldem.Tests
                                             )
                                         }
                                     ),
-                                    new HashSet<Card>()
+                                     new HashSet<Card>
+                                    {
+                                        new Card("3c"),
+                                        new Card("3d")
+                                    }
             };
 
             yield return new object[] {
@@ -467,7 +499,11 @@ namespace TexasHoldem.Tests
                                             )
                                         }
                                     ),
-                                    new HashSet<Card>()
+                                     new HashSet<Card>
+                                    {
+                                        new Card("3c"),
+                                        new Card("3d")
+                                    }
             };
 
         }
