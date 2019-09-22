@@ -116,17 +116,10 @@ namespace TexasHoldem
             var otherAsCard = other as Card;
 
             if (otherAsCard != null)
-            {
                 return this.CompareTo(otherAsCard);
-            }
             else
-            {
                 return -1;
-            }
-
         }
-
-
 
         public bool Equals(Card other)
         {
@@ -149,6 +142,7 @@ namespace TexasHoldem
 
         }
 
+        // for hashsets
         public override int GetHashCode()
         {
             return (int) this.Face ^ (int) this.Suit;

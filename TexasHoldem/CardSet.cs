@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TexasHoldem.Utils;
 
 namespace TexasHoldem
 {
@@ -20,7 +21,6 @@ namespace TexasHoldem
             StraightFlush = 8, // Five cards in a row, all in the same suit.
             RoyalFlush = 9 // Ten, Jack, Queen, King, Ace all in the same suit.
         }
-
 
         public static CardSet BuildRoyalFlush(Card[] cards)
         {
@@ -78,12 +78,12 @@ namespace TexasHoldem
             return new CardSet(CardSetLabel.ThreeOfAkind, cards);
         }
 
-        public static CardSet BuildTwoPairs(CardSet[] cards)
+        public static CardSet BuildTwoPairs(CardSet[] pairs)
         {
-            if (cards.Length != 2)
+            if (pairs.Length != 2)
                 throw new Exception("A two-pair set is made of 2 pairs");
 
-            return new CardSet(CardSetLabel.TwoPairs, cards);
+            return new CardSet(CardSetLabel.TwoPairs, pairs);
         }
 
         public static CardSet BuildPair(Card[] cards)
@@ -95,6 +95,9 @@ namespace TexasHoldem
         }
 
 
+        public CardSetLabel Label;
+
+        public CardSet[] SubSets;
 
         protected CardSet(CardSetLabel label, CardSet[] subSets)
         {
@@ -102,23 +105,32 @@ namespace TexasHoldem
             SubSets = subSets;
         }
 
-        public CardSetLabel Label;
 
-        public CardSet[] SubSets;
+        public HashSet<Card> GetAllCards()
+        {
+            // recursive
 
+            Card asCard = this as Card;
+            if (asCard != null)
+                return new HashSet<Card> { asCard };
+
+            HashSet<Card> cards = new HashSet<Card>();
+
+            foreach (CardSet subSet in SubSets)
+                cards.UnionWith(subSet.GetAllCards());
+
+            return cards;
+
+        }
 
         public int CompareTo(Card other)
         {
             var asCard = this as Card;
 
             if (asCard != null)
-            {
                 return asCard.Label - other.Label;
-            }
             else
-            {
                 return 1;
-            }
 
         }
 
@@ -131,13 +143,11 @@ namespace TexasHoldem
 
             if (asCard != null)
             {
-
                 if (otherAsCard != null)
                     return asCard.CompareTo(otherAsCard);
 
                 else
                     return asCard.CompareTo(other);
-
             }
 
             else if (otherAsCard != null)
@@ -145,25 +155,22 @@ namespace TexasHoldem
 
 
             if (Label > other.Label)
-            {
                 return 1;
-            }
-
             else if (Label < other.Label)
-            {
                 return -1;
-            }
 
-            Queue<CardSet> toVisit = new Queue<CardSet>();
-            Queue<CardSet> otherToVisit = new Queue<CardSet>();
+            // if same label we gotta check the subsets:
+
+            PriorityQueue<CardSet> toVisit = new PriorityQueue<CardSet>();
+            PriorityQueue<CardSet> otherToVisit = new PriorityQueue<CardSet>();
 
 
             List<CardSet> branches = new List<CardSet>(this.SubSets);
             List<CardSet> otherBranches = new List<CardSet>(other.SubSets);
 
 
-            branches.OrderByDescending(e => e);
-            otherBranches.OrderByDescending(e => e);
+            //branches.OrderByDescending(e => e);
+            //otherBranches.OrderByDescending(e => e);
 
             foreach (CardSet branch in branches)
                 toVisit.Enqueue(branch);
@@ -171,18 +178,13 @@ namespace TexasHoldem
             foreach (CardSet branch in otherBranches)
                 otherToVisit.Enqueue(branch);
 
-
-
-            // depth first search through each of the compared cardset
-            while (toVisit.Count > 0 && otherToVisit.Count > 0)
+            // double depth first search with priority queue
+            while (toVisit.Count() > 0 && otherToVisit.Count() > 0)
             {
                 CardSet current = toVisit.Dequeue();
                 CardSet otherCurrent = otherToVisit.Dequeue();
 
-                int a = 0;
-
                 int comparison = current.CompareTo(otherCurrent);
-
 
                 if (comparison != 0)
                     return comparison;
@@ -190,8 +192,8 @@ namespace TexasHoldem
                 branches = new List<CardSet>(current.SubSets);
                 otherBranches = new List<CardSet>(otherCurrent.SubSets);
 
-                branches.OrderByDescending(e => e);
-                otherBranches.OrderByDescending(e => e);
+                //branches.OrderByDescending(e => e);
+                //otherBranches.OrderByDescending(e => e);
 
                 foreach (CardSet branch in branches)
                     toVisit.Enqueue(branch);
@@ -200,7 +202,6 @@ namespace TexasHoldem
                     otherToVisit.Enqueue(branch);
 
             }
-
 
             // reaching this point means that every single subsets were equal so this is a tie
             return 0;
