@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace TexasHoldem
 {
+
+    /// <summary>
+    /// Represents a set of players
+    /// </summary>
     public class Round
     {
 

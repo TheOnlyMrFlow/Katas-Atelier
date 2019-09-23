@@ -4,7 +4,9 @@ using System.Linq;
 
 namespace TexasHoldem
 {
-
+    /// <summary>
+    /// Represents a combination of Valuables
+    /// </summary>
     public abstract class CardComplexCombination : IValuable, ICardCollection
     {
 

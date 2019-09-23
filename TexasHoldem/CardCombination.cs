@@ -3,6 +3,9 @@
 namespace TexasHoldem
 {
 
+    /// <summary>
+    /// Represents a combination of distinct Card objects
+    /// </summary>
     public abstract class CardCombination : IValuable, ICardCollection
     {
 

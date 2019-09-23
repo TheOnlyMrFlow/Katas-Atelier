@@ -32,7 +32,9 @@ namespace TexasHoldem
     }
 
 
-
+    /// <summary>
+    /// Represent a Texas Hodlem card
+    /// </summary>
     public class Card : IValuable, IComparable<Card>, IEquatable<Card>
     {
 

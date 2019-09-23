@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace TexasHoldem
 {
+    /// <summary>
+    /// The 5 best cards of a player
+    /// </summary>
     public class Hand : CardComplexCombination, IComparable<Hand>
     {
 

@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace TexasHoldem
 {
+
+    /// <summary>
+    /// Represents a player's set of cards
+    /// </summary>
     public class Player :  IComparable<Player>
     {
 
