@@ -1,61 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using TexasHoldem.Utils;
 
 namespace TexasHoldem
 {
-    public class Hand : IComparable<Hand>
+    public class Hand : CardComplexCombination, IComparable<Hand>
     {
+
+        public override string Label { get => _children.Max().Label; }
+        public bool Folded {get; private set;}
+
+        private List<IValuable> _children;
 
         public static Hand FoldedHand()
         {
             Hand h = new Hand();
-            h.folded = true;
+            h.Folded = true;
             return h;
         }
 
-        public readonly List<CardSet> CardSets = new List<CardSet>();
-        public readonly HashSet<Card> AllCards = new HashSet<Card>();
-
-        public bool folded { get; private set; }
-
-        private Hand() { }
-        
-        public Hand(IEnumerable<CardSet> sets) 
+        private Hand() : base()
         {
-            folded = false;
+            _children = new List<IValuable>();
+        }
 
-            foreach(CardSet set in sets)
-                AllCards.UnionWith(set.GetAllCards());
+
+        public Hand(ICollection<IValuable> children) : base()
+        {
+            _children = new List<IValuable>(children);
 
             if (AllCards.Count != 5)
-                throw new Exception("A hand must be made of 5 cards");
+                throw new CardCombinationValidationException("A hand must be made of 5 cards");
 
-            foreach (CardSet set in sets)
-                CardSets.Add(set);
+            Folded = false;
+        }
 
+        public override ICollection<IValuable> Children { get => new List<IValuable>(_children); }
 
+        public override ISet<Card> AllCards
+        {
+            get
+            {
+                ISet<Card> result = new HashSet<Card>();
+                foreach (IValuable v in _children)
+                {
+                    var asCard = v as Card;
+                    if (asCard != null)
+                        result.Add(asCard);
+                    else
+                        result.UnionWith(((ICardCollection)v).AllCards);
+                }
+                return result;
+            }
+        }
+
+        
+
+        public override int CompareTo(IValuable other)
+        {
+            var asHand = other as Hand;
+
+            if (asHand != null)
+                return CompareTo(asHand);
+
+            return _children.Max().CompareTo(other);
         }
 
         public int CompareTo(Hand other)
         {
-            if (folded)
-                return other.folded ? 0 : -1;
+            if (other.Folded && this.Folded)
+                return 0;
 
-            else if (other.folded)
+            if (other.Folded)
                 return 1;
 
-            CardSets.Sort();
-            other.CardSets.Sort();
-            int comparison;
-            int i = 0;
-            do
-            {
-                comparison = CardSets[i].CompareTo(other.CardSets[i]);
-                i++;
-            } while (comparison == 0 && i < CardSets.Count && i < other.CardSets.Count);
+            if (this.Folded)
+                return -1;
 
-            return comparison;
+            PriorityQueue<IValuable> selfToVisit = new PriorityQueue<IValuable>();
+            PriorityQueue<IValuable> otherToVisit = new PriorityQueue<IValuable>();
+
+            foreach (IValuable v in _children.OrderByDescending(val => val))
+                selfToVisit.Enqueue(v);
+
+            foreach (IValuable v in other._children.OrderByDescending(val => val))
+                otherToVisit.Enqueue(v);
+
+            while (selfToVisit.Count() > 0 && otherToVisit.Count() > 0)
+            {
+                int comparison = selfToVisit.Dequeue().CompareTo(otherToVisit.Dequeue());
+                if (comparison != 0)
+                    return comparison;
+            }
+
+
+            return 0;
         }
 
     }

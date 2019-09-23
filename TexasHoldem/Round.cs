@@ -33,12 +33,12 @@ namespace TexasHoldem
 
             var playersInOrder = GetRanking();
 
-            var winningHand = playersInOrder[0].GetHand();
+            var winningHand = playersInOrder[0].Hand;
 
             foreach (Player p in playersInOrder)
             {
                 HashSet<Card> unused;
-                Hand h = p.GetHand(out unused);
+                Hand h = p.Hand;
 
                 if (p.Cards.Count < 7)
                 {
@@ -52,12 +52,12 @@ namespace TexasHoldem
                 foreach (Card c in h.AllCards)
                     output += c + " ";
 
-                foreach (Card c in unused)
+                foreach (Card c in p.UnusedCards)
                     output += c + " ";
 
-                output += h.CardSets.Max().Label;
+                output += h.Children.Max().Label;
 
-                if (p.GetHand().CompareTo(winningHand) == 0)
+                if (p.Hand.CompareTo(winningHand) == 0)
                     output += " (winner)";
 
                 output += "\n";

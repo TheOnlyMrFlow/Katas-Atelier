@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bowling", "Bowling\Bowling.csproj", "{EE688C41-3938-4EFF-8FFC-9093A9785C6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bowling", "Bowling\Bowling.csproj", "{EE688C41-3938-4EFF-8FFC-9093A9785C6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bowling.Tests", "Bowling.Tests\Bowling.Tests.csproj", "{8F81AAF8-F16A-40C6-98AC-6D35C77463ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bowling.Tests", "Bowling.Tests\Bowling.Tests.csproj", "{8F81AAF8-F16A-40C6-98AC-6D35C77463ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TexasHoldem", "TexasHoldem\TexasHoldem.csproj", "{FAC11539-64BE-427B-9C9F-DD6CD6C99E47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TexasHoldem.Tests", "TexasHoldem.Tests\TexasHoldem.Tests.csproj", "{267197B1-693A-4FCA-BE81-145356762D97}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TexasHoldem.App", "TexasHoldem.App\TexasHoldem.App.csproj", "{2D49CDE0-DCC1-4C40-9526-C622B38D773B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandBox", "SandBox\SandBox.csproj", "{0356475F-10DD-4949-99ED-DD1600B50C3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,22 @@ Global
 		{8F81AAF8-F16A-40C6-98AC-6D35C77463ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F81AAF8-F16A-40C6-98AC-6D35C77463ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F81AAF8-F16A-40C6-98AC-6D35C77463ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAC11539-64BE-427B-9C9F-DD6CD6C99E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC11539-64BE-427B-9C9F-DD6CD6C99E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAC11539-64BE-427B-9C9F-DD6CD6C99E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC11539-64BE-427B-9C9F-DD6CD6C99E47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{267197B1-693A-4FCA-BE81-145356762D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{267197B1-693A-4FCA-BE81-145356762D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{267197B1-693A-4FCA-BE81-145356762D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{267197B1-693A-4FCA-BE81-145356762D97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D49CDE0-DCC1-4C40-9526-C622B38D773B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D49CDE0-DCC1-4C40-9526-C622B38D773B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D49CDE0-DCC1-4C40-9526-C622B38D773B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D49CDE0-DCC1-4C40-9526-C622B38D773B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0356475F-10DD-4949-99ED-DD1600B50C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0356475F-10DD-4949-99ED-DD1600B50C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0356475F-10DD-4949-99ED-DD1600B50C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0356475F-10DD-4949-99ED-DD1600B50C3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

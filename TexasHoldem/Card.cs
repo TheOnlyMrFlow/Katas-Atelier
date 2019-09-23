@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TexasHoldem
 {
@@ -32,18 +31,19 @@ namespace TexasHoldem
         Spades
     }
 
-    [Serializable]
-    public class Card : CardSet, IComparable<Card>, IComparable<CardSet>, IEquatable<Card>
+
+
+    public class Card : IValuable, IComparable<Card>, IEquatable<Card>
     {
 
         private static readonly Dictionary<char, Suit> charToSuit
-            = new Dictionary<char, Suit>
-                {
+           = new Dictionary<char, Suit>
+               {
                     { 'c', Suit.Clubs },
                     { 'd', Suit.Diamonds },
                     { 'h', Suit.Hearts },
                     { 's', Suit.Spades },
-                };
+               };
 
         private static readonly Dictionary<Suit, char> suitToChar
             = charToSuit.ToDictionary((i) => i.Value, (i) => i.Key);
@@ -71,18 +71,27 @@ namespace TexasHoldem
         private static readonly Dictionary<Face, char> faceToChar
             = charToFace.ToDictionary((i) => i.Value, (i) => i.Key);
 
+        public static ISet<Card> StringToCardSet(String cards)
+        {
+            ISet<Card> result = new HashSet<Card>();
+            foreach (string c in cards.Split(' '))
+                result.Add(new Card(c));
+
+            return result;
+        }
+
         public Face Face { get; set; }
         public Suit Suit { get; set; }
-        
+
+        public string Label { get => this.ToString();  }
+
         public Card(Face face, Suit suit)
-            :base(CardSetLabel.SingleCard, new CardSet[0])
         {
             this.Face = face;
             this.Suit = suit;
         }
 
         public Card(String cardAsString)
-            : base(CardSetLabel.SingleCard, new CardSet[0])
         {
             if (cardAsString.Length != 2)
                 throw new Exception("A card is represented by 2 characters");
@@ -111,14 +120,14 @@ namespace TexasHoldem
             return this.Face - other.Face;
         }
 
-        public int CompareTo(CardSet other)
+        public int CompareTo(IValuable other)
         {
-            var otherAsCard = other as Card;
+            var asCard = other as Card;
 
-            if (otherAsCard != null)
-                return this.CompareTo(otherAsCard);
-            else
-                return -1;
+            if (asCard != null)
+                return CompareTo(asCard);
+
+            return GlobVars.TypeToValue[this.GetType()] - GlobVars.TypeToValue[other.GetType()];
         }
 
         public bool Equals(Card other)
@@ -126,8 +135,12 @@ namespace TexasHoldem
             return this.Face == other.Face && this.Suit == other.Suit;
         }
 
-        override
-        public String ToString()
+        public override int GetHashCode()
+        {
+            return (int)this.Face ^ (int)this.Suit;
+        }
+
+      public override String ToString()
         {
             char faceChar;
             char suitChar;
@@ -141,13 +154,5 @@ namespace TexasHoldem
             return "" + faceChar + suitChar;
 
         }
-
-        // for hashsets
-        public override int GetHashCode()
-        {
-            return (int) this.Face ^ (int) this.Suit;
-        }
     }
-
-
 }

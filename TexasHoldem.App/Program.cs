@@ -9,7 +9,7 @@ namespace TexasHoldem.App
 
             Console.WriteLine(
             new Round()
-                .AddPlayer("Kc 9s Ks Kd 9d 3c 6d")
+                .AddPlayer("Kc 9s Ks Kd 6d 3c 9d")
                 .AddPlayer("9c Ah Ks Kd 9d 3c 6d")
                 .AddPlayer("Ac Qc Ks Kd 9d 3c")
                 .AddPlayer("9h 5s")

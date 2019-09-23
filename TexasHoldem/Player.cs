@@ -5,10 +5,14 @@ using System.Linq;
 
 namespace TexasHoldem
 {
-    public class Player : IComparable<Player>
+    public class Player :  IComparable<Player>
     {
 
         public ISet<Card> Cards { get; private set; } = new HashSet<Card>();
+
+        public Hand Hand { get; private set; }
+        public ISet<Card> UnusedCards { get; private set; }
+
 
         private Dictionary<Face, int> facesOccurences = new Dictionary<Face, int>();
         private Dictionary<Suit, int> suitsOccurences = new Dictionary<Suit, int>();
@@ -35,147 +39,169 @@ namespace TexasHoldem
                 facesOccurences[c.Face] = currentFaceOccurence + 1;
                 suitsOccurences[c.Suit] = currentSuitOccurence + 1;
 
+                ComputeHand();
+                ComputeUnusedCards();
+
             }
 
         }
 
-        public Hand GetHand()
+        private void ComputeHand()
         {
 
             if (Cards.Count < 7)
-                return Hand.FoldedHand();
+            {
+                Hand = Hand.FoldedHand();
+                return;
+            }
 
-            CardSet[] straights = FindAllStraights();
-            CardSet[] flushes = FindAllFlushes();
-            CardSet[] pairs = FindAllPairs();
-            CardSet[] triples = FindAllThreeOfAKind();
-            CardSet quadruple = FindFourOfAKind();
-            
+            Straight[] straights = FindAllStraights();
+            Flush[] flushes = FindAllFlushes();
+            Pair[] pairs = FindAllPairs();
+            Triple[] triples = FindAllThreeOfAKind();
+            Quadruple quadruple = FindFourOfAKind();
+
 
             if (flushes.Length > 0)
             {
-                foreach (CardSet f in flushes)
+                foreach (Flush f in flushes)
                 {
-                    Card[] cards = f.SubSets as Card[];
-                    if (IsStraight(cards))
+
+                    try
                     {
-                        if (cards.Select(c => c.Face).Contains(Face.Ace))
-                            return new Hand(new[] { CardSet.BuildRoyalFlush(cards) });
-                        else
-                            return new Hand(new[] { CardSet.BuildStraightFlush(cards) });
+                        RoyalFlush rf = new RoyalFlush(f.AllCards);
+                        Hand =  new Hand(new[] { rf });
+                        return;
+
                     }
+                    catch (CardCombinationValidationException) { }
+
+                    try
+                    {
+                        StraightFlush sf = new StraightFlush(f.AllCards);
+                        Hand = new Hand(new[] { sf });
+                        return;
+
+                    }
+                    catch (CardCombinationValidationException) { }
+
                 }
             }
 
-            List<CardSet> sets = new List<CardSet>();
+            List<IValuable> combs = new List<IValuable>();
 
             if (quadruple != null)
-                sets.Add(quadruple);
+                combs.Add(quadruple);
 
             if (triples.Length > 0 && pairs.Length > 0)
-                return new Hand(new[] { CardSet.BuildFullHouse(triples.Max(), pairs.Max()) });
-
+            {
+                Hand =  new Hand(new[] { new FullHouse(triples.Max(), pairs.Max()) });
+                return;
+            }
 
             if (flushes.Length > 0)
-                return new Hand(new[] { flushes.Max() });
+            {
+                Hand = new Hand(new[] { flushes.Max() });
+                return;
+            }
 
             if (straights.Length > 0)
-                return new Hand(new[] { straights.Max() });
+            {
+                Hand =  new Hand(new[] { straights.Max() });
+                return;
+            }
 
             if (triples.Length > 0)
-                sets.Add(triples.Max());
+                combs.Add(triples.Max());
 
             if (pairs.Length > 1)
             {
-                CardSet[] twoHighestPairs = pairs.OrderByDescending(p => p).Take(2).ToArray();
-                sets.Add(CardSet.BuildTwoPairs(pairs));
+                Pair[] twoHighestPairs = pairs.OrderByDescending(p => p).Take(2).ToArray();
+                combs.Add(new TwoPairs(pairs[0], pairs[1]));
             }
 
             else if (pairs.Length == 1)
-                sets.Add(pairs[0]);
+                combs.Add(pairs[0]);
 
 
             HashSet<Card> usedCards = new HashSet<Card>();
 
-            foreach (CardSet set in sets)
-                usedCards.UnionWith(set.GetAllCards());
+            foreach (ICardCollection comb in combs)
+                usedCards.UnionWith(comb.AllCards);
 
             int missingCardAmount = 5 - usedCards.Count;
 
-            sets.AddRange(Cards.Except(usedCards).OrderByDescending(c => c).Take(missingCardAmount));
+            combs.AddRange(Cards.Except(usedCards).OrderByDescending(c => c).Take(missingCardAmount));
 
-            return new Hand(sets);
+            Hand = new Hand(combs);
         }
 
-        public Hand GetHand(out HashSet<Card> unused)
+
+        private void ComputeUnusedCards()
         {
-            Hand h = GetHand();
-
-            unused = new HashSet<Card>(Cards.Except(h.AllCards));
-
-            return h;
+            UnusedCards = new HashSet<Card>(Cards.Except(Hand.AllCards));   
         }
 
         public int CompareTo(Player other)
         {
-            return GetHand().CompareTo(other.GetHand());
+            return Hand.CompareTo(other.Hand);
         }
 
-        private List<Card[]> FindTuplesOfSize(int n)
+        private List<HashSet<Card>> FindTuplesOfSize(int n)
         {
 
             return Cards
                     .Where(c => facesOccurences[c.Face] == n)
                     .GroupBy(c => c.Face)
-                    .Select(grp => grp.ToArray())
+                    .Select(grp => new HashSet<Card>(grp))
                     .ToList();
 
         }
 
-        private CardSet[] FindAllPairs()
+        private Pair[] FindAllPairs()
         {
-            List<Card[]> pairs = FindTuplesOfSize(2);
+            List<HashSet<Card>> pairs = FindTuplesOfSize(2);
 
-            CardSet[] ret = new CardSet[pairs.Count];
+            Pair[] ret = new Pair[pairs.Count];
 
             for (int i = 0; i < pairs.Count; i++)
-                ret[i] = CardSet.BuildPair(pairs[i]);
+                ret[i] = new Pair(pairs[i]);
 
             return ret;
         }
 
-        private CardSet[] FindAllThreeOfAKind()
+        private Triple[] FindAllThreeOfAKind()
         {
-            List<Card[]> triples = FindTuplesOfSize(3);
+            List<HashSet<Card>> triples = FindTuplesOfSize(3);
 
-            CardSet[] ret = new CardSet[triples.Count];
+            Triple[] ret = new Triple[triples.Count];
 
             for (int i = 0; i < triples.Count; i++)
-                ret[i] = CardSet.BuildThreeOfAKind(triples[i]);
+                ret[i] = new Triple(triples[i]);
 
             return ret;
         }
 
-        private CardSet FindFourOfAKind()
+        private Quadruple FindFourOfAKind()
         {
-            List<Card[]> quadruples = FindTuplesOfSize(4);
+            List<HashSet<Card>> quadruples = FindTuplesOfSize(4);
 
             if (quadruples.Count == 0)
                 return null;
 
-            return CardSet.BuildFourOfAKind(quadruples[0]);
+            return new Quadruple(quadruples[0]); 
 
         }
 
 
-        private CardSet[] FindAllFlushes()
+        private Flush[] FindAllFlushes()
         {
             // suitsOccurences.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
             var maxSuit = suitsOccurences.Aggregate((x, y) => x.Value > y.Value ? x : y).Key; ;
             if (suitsOccurences[maxSuit] < 5)
-                return new CardSet[0];
+                return new Flush[0];
 
-            List<CardSet> flushes = new List<CardSet>();
+            List<Flush> flushes = new List<Flush>();
 
             var combinations = Cards
                                 .Where(c => c.Suit == maxSuit)
@@ -183,7 +209,7 @@ namespace TexasHoldem
 
             foreach(IEnumerable<Card> comb in combinations)
             {
-                flushes.Add(CardSet.BuildFlush(comb.ToArray()));
+                flushes.Add(new Flush(new HashSet<Card>(comb)));
             }
 
 
@@ -191,7 +217,7 @@ namespace TexasHoldem
         }        
 
 
-        private CardSet[] FindAllStraights()
+        private Straight[] FindAllStraights()
         {
             HashSet<Card> temp = new HashSet<Card>(Cards);
             var aces = temp.Where(c => c.Face == Face.Ace).ToArray();
@@ -220,50 +246,18 @@ namespace TexasHoldem
             }
 
             if (potentialStraight.Count < 5)
-            {
-                return new CardSet[0];
-            }
+                return new Straight[0];
 
-
-            List<CardSet> straights = new List<CardSet>();
+            List<Straight> straights = new List<Straight>();
 
             while (potentialStraight.Count > 5)
             {
-                straights.AddRange(potentialStraight.Take(5));
+                straights.Add(new Straight(new HashSet<Card>(potentialStraight.Take(5))));
                 potentialStraight.Pop();
             }
 
             return straights.ToArray();
         }
 
-        private static bool IsStraight(Card[] sequence)
-        {
-            Card[] orderedSeq = sequence.OrderBy(c => c.Face).ToArray();
-
-            int len = orderedSeq.Length;
-            Face prevFace = orderedSeq[0].Face;
-            for (int i = 1; i < len; i++)
-            {
-                if (orderedSeq[i].Face != prevFace + 1)
-                    return false;
-
-                prevFace = orderedSeq[i].Face;
-            }
-
-            return true;
-        }
-
-    }
-}
-
-
-// thank you stack overflow
-public static class Util
-{
-    public static IEnumerable<IEnumerable<T>> DifferentCombinations<T>(this IEnumerable<T> elements, int k)
-    {
-        return k == 0 ? new[] { new T[0] } :
-          elements.SelectMany((e, i) =>
-            elements.Skip(i + 1).DifferentCombinations(k - 1).Select(c => (new[] { e }).Concat(c)));
     }
 }
