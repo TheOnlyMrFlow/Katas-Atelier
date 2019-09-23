@@ -132,6 +132,14 @@ namespace TexasHoldem.Tests
                                     Comparison.Equal };
 
             yield return new object[] {
+                                    new TwoPairs(
+                                        new Pair(Card.StringToCardSet("3s 3h")),
+                                        new Pair(Card.StringToCardSet("4s 4h"))
+                                    ),
+                                    new Quadruple(Card.StringToCardSet("3c 3d 3h 3s")),
+                                    Comparison.Lesser };
+
+            yield return new object[] {
                                     new FullHouse(
                                         new Triple(Card.StringToCardSet("3s 3h 3d")),
                                         new Pair(Card.StringToCardSet("2h 2c"))
@@ -234,9 +242,11 @@ namespace TexasHoldem.Tests
             {
                 case Comparison.Greater:
                     Assert.True(a.CompareTo(b) > 0);
+                    Assert.True(b.CompareTo(a) < 0);
                     break;
                 case Comparison.Lesser:
                     Assert.True(a.CompareTo(b) < 0);
+                    Assert.True(b.CompareTo(a) > 0);
                     break;
                 case Comparison.Equal:
                     Assert.True(a.CompareTo(b) == 0);
@@ -303,9 +313,9 @@ namespace TexasHoldem.Tests
         {
             Player d = new Player(dealAsString.Split(' '));
 
-            HashSet<Card> unused;
 
-            Hand computedHands = d.GetHand(out unused);
+            Hand computedHands = d.Hand;
+            ISet<Card> unused = d.UnusedCards;
 
             Assert.True(computedHands.CompareTo(expectedHand) == 0);
             Assert.True(unused.SetEquals(expectedUnused));

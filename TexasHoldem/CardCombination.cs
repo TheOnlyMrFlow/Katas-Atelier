@@ -15,7 +15,7 @@ namespace TexasHoldem
         public CardCombination(ISet<Card> cards)
         {
             _cards = new HashSet<Card>(cards);
-        }
+        } 
 
         public abstract int CompareTo(IValuable other);
     }

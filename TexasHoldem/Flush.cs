@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TexasHoldem.Utils;
 
 namespace TexasHoldem
 {
@@ -22,21 +21,22 @@ namespace TexasHoldem
 
         public int CompareTo(Flush other)
         {
-            PriorityQueue<Card> selfToVisit = new PriorityQueue<Card>();
-            PriorityQueue<Card> otherToVisit = new PriorityQueue<Card>();
+            ISet<Card> selfChildrenCopy = AllCards;
+            ISet<Card> otherChildrenCopy = other.AllCards;
 
-            foreach (Card c in _cards.OrderByDescending(c => c))
-                selfToVisit.Enqueue(c);
-
-            foreach (Card c in other._cards.OrderByDescending(c => c))
-                otherToVisit.Enqueue(c);
-
-            while(selfToVisit.Count() > 0 && otherToVisit.Count() > 0)
+            while (selfChildrenCopy.Count() > 0 && otherChildrenCopy.Count() > 0)
             {
-                int comparison = selfToVisit.Dequeue().CompareTo(otherToVisit.Dequeue());
+                var selfCurrent = selfChildrenCopy.Max();
+                var otherCurrent = otherChildrenCopy.Max();
+                selfChildrenCopy.Remove(selfCurrent);
+                otherChildrenCopy.Remove(otherCurrent);
+
+                int comparison = selfCurrent.CompareTo(otherCurrent);
+
                 if (comparison != 0)
                     return comparison;
             }
+
 
             return 0;
         }

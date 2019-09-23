@@ -22,9 +22,9 @@ namespace TexasHoldem
             players.Add(new Player(cards.Split(' ')));
             return this;
         }
-        public List<Player> GetRanking()
+        public IEnumerable<Player> GetRanking()
         {
-            return players.OrderByDescending(p => p).ToList();
+            return players.OrderByDescending(p => p.Hand);
         }
 
         public string ShowResult()
@@ -33,11 +33,10 @@ namespace TexasHoldem
 
             var playersInOrder = GetRanking();
 
-            var winningHand = playersInOrder[0].Hand;
+            var winningHand = playersInOrder.ElementAt(0).Hand;
 
             foreach (Player p in playersInOrder)
             {
-                HashSet<Card> unused;
                 Hand h = p.Hand;
 
                 if (p.Cards.Count < 7)

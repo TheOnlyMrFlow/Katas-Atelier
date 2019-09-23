@@ -14,7 +14,7 @@ namespace TexasHoldem
 
             Face f = cards.ElementAt(0).Face;
             if (cards.ElementAt(1).Face != f || cards.ElementAt(2).Face != f || cards.ElementAt(3).Face != f)
-                throw new CardCombinationValidationException("A triple is made of 4 cards that have the same face");
+                throw new CardCombinationValidationException("A quadruple is made of 4 cards that have the same face");
         }
        
 
