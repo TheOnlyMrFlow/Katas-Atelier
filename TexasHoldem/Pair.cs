@@ -12,7 +12,6 @@ namespace TexasHoldem
             if (cards.Count != 2)
                 throw new CardCombinationValidationException("A pair is made of 2 cards");
 
-
             if (cards.ElementAt(0).CompareTo(cards.ElementAt(1)) != 0)
                 throw new CardCombinationValidationException("A pair is made of 2 cards that have the same face");
         }
@@ -20,7 +19,6 @@ namespace TexasHoldem
 
         public int CompareTo(Pair other)
         {
-
             return this._cards.First().CompareTo(other._cards.First());
         }
 

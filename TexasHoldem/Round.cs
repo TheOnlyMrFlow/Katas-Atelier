@@ -10,7 +10,6 @@ namespace TexasHoldem
     /// </summary>
     public class Round
     {
-
         public List<Player> players { get; private set; } = new List<Player>();
 
         public Round() { }
@@ -67,7 +66,6 @@ namespace TexasHoldem
             }
 
             return output;
-
         }
 
     }

@@ -6,7 +6,6 @@ namespace TexasHoldem
 {
     public class Straight : CardCombination, IComparable<Straight>
     {
-
         public override string Label => "Straight";
         public Straight(ISet<Card> cards) : base(cards)
         {

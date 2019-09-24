@@ -10,10 +10,10 @@ namespace TexasHoldem
         public override string Label => "Straight Flush";
         public StraightFlush(ISet<Card> cards) : base(cards)
         {
-
-            // will throw error if not straight
+            // the base constructor already checks if it is a flush
+            // we call straight constructor to check if it is a straight,
+            // it will throw error if not
             new Straight(cards);
-           
         }
 
         public int CompareTo(StraightFlush other)

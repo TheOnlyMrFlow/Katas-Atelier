@@ -24,6 +24,9 @@ namespace TexasHoldem
             ISet<Card> selfChildrenCopy = AllCards;
             ISet<Card> otherChildrenCopy = other.AllCards;
 
+            // Tie breaking two flushes is done by comparing their highest card.
+            // If they have the smame value then we compare their 2nd highest, etc ...
+
             while (selfChildrenCopy.Count() > 0 && otherChildrenCopy.Count() > 0)
             {
                 var selfCurrent = selfChildrenCopy.Max();

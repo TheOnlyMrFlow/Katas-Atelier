@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-// thank you stack overflow
+
+
+// Found on StackOverflow, it finds all different combinations of k elements in an IEnumerable
 public static class Util
 {
     public static IEnumerable<IEnumerable<T>> DifferentCombinations<T>(this IEnumerable<T> elements, int k)

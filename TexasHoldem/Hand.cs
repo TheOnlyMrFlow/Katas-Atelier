@@ -33,7 +33,7 @@ namespace TexasHoldem
             _children = new List<IValuable>(children);
 
             if (AllCards.Count != 5)
-                throw new CardCombinationValidationException("A hand must be made of 5 cards");
+                throw new CardCombinationValidationException("A non folded hand must be made of 5 cards");
 
             Folded = false;
         }

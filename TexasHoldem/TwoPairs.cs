@@ -6,7 +6,6 @@ namespace TexasHoldem
 {
     public class TwoPairs : CardComplexCombination, IComparable<TwoPairs>
     {
-
         public override string Label => "Two pairs";
 
         Pair _highPair;
