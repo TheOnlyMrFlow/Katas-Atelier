@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.2",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.2": {
+      "GameOfLife2.App/1.0.0": {
+        "dependencies": {
+          "GameOfLife2": "1.0.0"
+        },
+        "runtime": {
+          "GameOfLife2.App.dll": {}
+        }
+      },
+      "GameOfLife2/1.0.0": {
+        "runtime": {
+          "GameOfLife2.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GameOfLife2.App/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GameOfLife2/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

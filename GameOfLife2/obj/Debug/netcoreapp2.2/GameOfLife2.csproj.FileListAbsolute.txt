@@ -1,0 +1,9 @@
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\GameOfLife2\obj\Debug\netcoreapp2.2\GameOfLife2.csprojAssemblyReference.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\GameOfLife2\obj\Debug\netcoreapp2.2\GameOfLife2.csproj.CoreCompileInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\GameOfLife2\obj\Debug\netcoreapp2.2\GameOfLife2.AssemblyInfoInputs.cache
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\GameOfLife2\obj\Debug\netcoreapp2.2\GameOfLife2.AssemblyInfo.cs
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\GameOfLife2\bin\Debug\netcoreapp2.2\GameOfLife2.deps.json
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\GameOfLife2\bin\Debug\netcoreapp2.2\GameOfLife2.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\GameOfLife2\bin\Debug\netcoreapp2.2\GameOfLife2.pdb
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\GameOfLife2\obj\Debug\netcoreapp2.2\GameOfLife2.dll
+C:\Users\comte\Documents\Kata Atelier\KataAtelier\GameOfLife2\obj\Debug\netcoreapp2.2\GameOfLife2.pdb
