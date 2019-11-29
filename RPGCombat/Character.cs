@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RPGCombat
 {
@@ -12,6 +13,11 @@ namespace RPGCombat
 
     public class Character
     {
+
+        private ISet<Faction> _factions = new HashSet<Faction>();
+
+        public IEnumerable<Faction> Factions => _factions.AsEnumerable();
+
         public const int MAX_HEALTH = 1000;
 
         public const int MIN_LEVEL_DIFFERENCE_FOR_DAMAGE_MODIFICATION = 5;
@@ -51,6 +57,9 @@ namespace RPGCombat
             if (IsInRangeToAttack(target) == false)
                 return false;
 
+            if (IsAlliedWith(target))
+                return false;
+
             if (target.IsFiveOrMoreLevelHigherThan(this))
             {
                 var multiplier = DMG_RATIO_WHEN_LEVEL_DIFF;
@@ -78,15 +87,48 @@ namespace RPGCombat
             Health = Math.Max(0, Health - damageAmount);
         }
 
-        public void HealSelf(int amount)
+        public bool Heal(Character target, int healAmount)
         {
-            if (IsAlive)
-                Health = Math.Min(MAX_HEALTH, Health + amount);
+            if (target.IsDead)
+                return false;
+
+            if (IsNotAlliedWith(target))
+                return false;
+
+            target.Health = Math.Min(MAX_HEALTH, target.Health + healAmount);
+
+            return true;
+
+        }
+
+        public bool HealSelf(int healAmount)
+        {
+            return Heal(this, healAmount);
         }
 
         private bool IsFiveOrMoreLevelHigherThan(Character other)
         {
             return this.Level - other.Level >= MIN_LEVEL_DIFFERENCE_FOR_DAMAGE_MODIFICATION;
+        }
+
+        public void JoinFaction(Faction faction)
+        {
+            _factions.Add(faction);
+        }
+
+        public void LeaveFaction(Faction faction)
+        {
+            _factions.Remove(faction);
+        }
+
+        public bool IsAlliedWith(Character other)
+        {
+            return this == other || _factions.Intersect(other._factions).Any();
+        }
+
+        public bool IsNotAlliedWith(Character other)
+        {
+            return !IsAlliedWith(other);
         }
 
     }

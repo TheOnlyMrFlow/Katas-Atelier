@@ -31,14 +31,24 @@ namespace RPGCombat.Test
     //If the target is 5 or more Levels above the attacker, Damage is reduced by 50%
     //If the target is 5 or more levels below the attacker, Damage is increased by 50%
 
-    
-        
+
+
     // ITERATION 3
 
     //Characters have an attack Max Range.
     //Melee fighters have a range of 2 meters.
     //Ranged fighters have a range of 20 meters.
     //Characters must be in range to deal damage to a target.
+
+    //ITERATION 4
+
+    //Characters may belong to one or more Factions.
+    //Newly created Characters belong to no Faction.
+    //A Character may Join or Leave one or more Factions.
+    //Players belonging to the same Faction are considered Allies.
+    //Allies cannot Deal Damage to one another.
+    //Allies can Heal one another.
+
 
 
 
@@ -147,7 +157,7 @@ namespace RPGCombat.Test
             var dealer = new Character();
             var receiver = new Character();
             dealer.Attack(receiver, 1200);
-            receiver.HealSelf(300);
+            receiver.HealSelf(300).Should().BeFalse();
             receiver.Health.Should().Be(0);
         }
 
@@ -184,6 +194,120 @@ namespace RPGCombat.Test
             target.Position = new Point2D(19, 19);
             var successful = rangedFighter.Attack(target, 100);
             successful.Should().BeFalse();
+        }
+
+        [Fact]
+        public void newly_created_character_belong_to_no_faction()
+        {
+            var character = new Character();
+            character.Factions.Should().BeEmpty();
+
+        }
+
+        [Fact]
+        public void character_can_join_factions()
+        {
+            var factionA = new Faction("faction A");
+            var factionB = new Faction("faction B");
+
+            var character = new Character();
+            character.JoinFaction(factionA);
+            character.JoinFaction(factionB);
+
+            character.Factions.Should().Contain(factionA);
+            character.Factions.Should().Contain(factionB);
+
+        }
+
+        [Fact]
+        public void character_can_leave_factions()
+        {
+            var factionA = new Faction("faction A");
+            var factionB = new Faction("faction B");
+
+            var character = new Character();
+            character.JoinFaction(factionA);
+            character.JoinFaction(factionB);
+
+            character.LeaveFaction(factionA);
+
+            character.Factions.Should().NotContain(factionA);
+            character.Factions.Should().Contain(factionB);
+
+        }
+
+        [Fact]
+        public void characters_in_same_faction_are_considered_allies()
+        {
+            var faction = new Faction("faction");
+
+            var characterA = new Character();
+            var characterB = new Character();
+            characterA.JoinFaction(faction);
+            characterB.JoinFaction(faction);
+
+            characterA.IsAlliedWith(characterB).Should().BeTrue();
+
+        }
+
+        [Fact]
+        public void characters_are_not_allies_if_no_common_faction()
+        {
+            var factionA = new Faction("faction A");
+            var factionB = new Faction("faction B");
+
+            var characterA = new Character();
+            var characterB = new Character();
+            characterA.JoinFaction(factionA);
+            characterB.JoinFaction(factionB);
+
+            characterA.IsAlliedWith(characterB).Should().BeFalse();
+
+        }
+
+        [Fact]
+        public void allies_cannot_attack_each_other()
+        {
+            var faction = new Faction("faction");
+
+            var characterA = new Character();
+            var characterB = new Character();
+            characterA.JoinFaction(faction);
+            characterB.JoinFaction(faction);
+
+            characterA.Attack(characterB, 100).Should().BeFalse();
+
+        }
+
+        [Fact]
+        public void allies_can_heal_each_other()
+        {
+            var faction = new Faction("faction");
+
+            var characterA = new Character();
+            var characterB = new Character { Health = 500 };
+            characterA.JoinFaction(faction);
+            characterB.JoinFaction(faction);
+
+            characterA.Heal(characterB, 100);
+            characterB.Health.Should().Be(600);
+
+        }
+
+        [Fact]
+        public void enemies_cannot_heal_each_other()
+        {
+            var factionA = new Faction("faction A");
+            var factionB = new Faction("faction B");
+
+            var characterA = new Character();
+            var characterB = new Character { Health = 500 };
+            characterA.JoinFaction(factionA);
+            characterB.JoinFaction(factionB);
+
+            characterA.Heal(characterB, 100).Should().BeFalse();
+            characterB.Health.Should().Be(500);
+
         }
 
     }
