@@ -18,13 +18,26 @@ namespace RPGCombat
 
         public void DealDamage(Character receiver, int amount)
         {
+            if (this == receiver)
+                return;
+
+            if (receiver.IsFiveOrMoreLevelHigherThan(this))
+                amount = (int) (amount * 0.5f);
+            else if (this.IsFiveOrMoreLevelHigherThan(receiver))
+                amount = (int)(amount * 1.5f);
+
             receiver.Health = Math.Max(0, receiver.Health - amount);
         }
 
-        public void Heal(Character receiver, int amount)
+        public void HealSelf(int amount)
         {
-            if (receiver.IsAlive)
-                receiver.Health = Math.Min(1000, receiver.Health + amount);
+            if (IsAlive)
+                Health = Math.Min(1000, Health + amount);
+        }
+
+        private bool IsFiveOrMoreLevelHigherThan(Character other)
+        {
+            return this.Level - other.Level >= 5;
         }
     }
 }

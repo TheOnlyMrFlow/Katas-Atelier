@@ -4,7 +4,7 @@ using FluentAssertions;
 
 namespace RPGCombat.Test
 {
-
+    //  ITERATION 1
 
     //All Characters, when created, have:
     //Health, starting at 1000
@@ -19,6 +19,17 @@ namespace RPGCombat.Test
     //A Character can Heal a Character.
     //Dead characters cannot be healed
     //Healing cannot raise health above 1000
+
+
+
+    // ITERATION 2
+
+    //A Character cannot Deal Damage to itself.
+    //A Character can only Heal itself.
+
+    //When dealing damage:
+    //If the target is 5 or more Levels above the attacker, Damage is reduced by 50%
+    //If the target is 5 or more levels below the attacker, Damage is increased by 50%
 
 
     public class CharacterTest
@@ -54,12 +65,40 @@ namespace RPGCombat.Test
         }
 
         [Fact]
+        public void damage_is_decreased_by_50_percent_if_receiver_is_5_or_more_level_above()
+        {
+            var attackerLevel1 = new Character();
+            var receiverLevel6 = new Character();
+            receiverLevel6.Level = 6;
+            attackerLevel1.DealDamage(receiverLevel6, 300);
+            receiverLevel6.Health.Should().Be(850);
+        }
+
+        [Fact]
+        public void damage_is_increased_by_50_percent_if_attacker_is_5_or_more_level_above()
+        {
+            var attackerLevel6 = new Character();
+            var receiverLevel1 = new Character();
+            attackerLevel6.Level = 6;
+            attackerLevel6.DealDamage(receiverLevel1, 100);
+            receiverLevel1.Health.Should().Be(850);
+        }
+
+        [Fact]
         public void damaging_a_character_substracts_its_health_no_lower_than_zero()
         {
             var attacker = new Character();
             var receiver = new Character();
             attacker.DealDamage(receiver, 1100);
             receiver.Health.Should().Be(0);
+        }
+
+        [Fact]
+        public void a_character_cannot_deal_damage_to_itself()
+        {
+            var clumsyGuy = new Character();
+            clumsyGuy.DealDamage(clumsyGuy, 200);
+            clumsyGuy.Health.Should().Be(1000);
         }
 
         [Fact]
@@ -72,13 +111,12 @@ namespace RPGCombat.Test
         }
 
         [Fact]
-        public void healing_a_character_restores_his_health()
+        public void healing_restores_health()
         {
-            var dealer = new Character();
-            var receiver = new Character();
-            dealer.DealDamage(receiver, 200);
-            dealer.Heal(receiver, 100);
-            receiver.Health.Should().Be(900);
+            var character = new Character();
+            character.Health = 500;
+            character.HealSelf(100);
+            character.Health.Should().Be(600);
         }
 
 
@@ -88,7 +126,7 @@ namespace RPGCombat.Test
             var dealer = new Character();
             var receiver = new Character();
             dealer.DealDamage(receiver, 200);
-            dealer.Heal(receiver, 300);
+            receiver.HealSelf(300);
             receiver.Health.Should().Be(1000);
         }
 
@@ -98,8 +136,10 @@ namespace RPGCombat.Test
             var dealer = new Character();
             var receiver = new Character();
             dealer.DealDamage(receiver, 1200);
-            dealer.Heal(receiver, 300);
+            receiver.HealSelf(300);
             receiver.Health.Should().Be(0);
         }
+
+
     }
 }
