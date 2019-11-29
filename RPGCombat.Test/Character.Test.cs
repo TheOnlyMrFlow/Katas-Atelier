@@ -31,6 +31,16 @@ namespace RPGCombat.Test
     //If the target is 5 or more Levels above the attacker, Damage is reduced by 50%
     //If the target is 5 or more levels below the attacker, Damage is increased by 50%
 
+    
+        
+    // ITERATION 3
+
+    //Characters have an attack Max Range.
+    //Melee fighters have a range of 2 meters.
+    //Ranged fighters have a range of 20 meters.
+    //Characters must be in range to deal damage to a target.
+
+
 
     public class CharacterTest
     {
@@ -60,7 +70,7 @@ namespace RPGCombat.Test
         {
             var attacker = new Character();
             var receiver = new Character();
-            attacker.DealDamage(receiver, 300);
+            attacker.Attack(receiver, 300);
             receiver.Health.Should().Be(700);
         }
 
@@ -70,7 +80,7 @@ namespace RPGCombat.Test
             var attackerLevel1 = new Character();
             var receiverLevel6 = new Character();
             receiverLevel6.Level = 6;
-            attackerLevel1.DealDamage(receiverLevel6, 300);
+            attackerLevel1.Attack(receiverLevel6, 300);
             receiverLevel6.Health.Should().Be(850);
         }
 
@@ -80,7 +90,7 @@ namespace RPGCombat.Test
             var attackerLevel6 = new Character();
             var receiverLevel1 = new Character();
             attackerLevel6.Level = 6;
-            attackerLevel6.DealDamage(receiverLevel1, 100);
+            attackerLevel6.Attack(receiverLevel1, 100);
             receiverLevel1.Health.Should().Be(850);
         }
 
@@ -89,7 +99,7 @@ namespace RPGCombat.Test
         {
             var attacker = new Character();
             var receiver = new Character();
-            attacker.DealDamage(receiver, 1100);
+            attacker.Attack(receiver, 1100);
             receiver.Health.Should().Be(0);
         }
 
@@ -97,8 +107,9 @@ namespace RPGCombat.Test
         public void a_character_cannot_deal_damage_to_itself()
         {
             var clumsyGuy = new Character();
-            clumsyGuy.DealDamage(clumsyGuy, 200);
-            clumsyGuy.Health.Should().Be(1000);
+            var successful = clumsyGuy.Attack(clumsyGuy, 200);
+            successful.Should().BeFalse();
+            
         }
 
         [Fact]
@@ -106,7 +117,7 @@ namespace RPGCombat.Test
         {
             var attacker = new Character();
             var receiver = new Character();
-            attacker.DealDamage(receiver, 1100);
+            attacker.Attack(receiver, 1100);
             receiver.IsAlive.Should().Be(false);
         }
 
@@ -125,7 +136,7 @@ namespace RPGCombat.Test
         {
             var dealer = new Character();
             var receiver = new Character();
-            dealer.DealDamage(receiver, 200);
+            dealer.Attack(receiver, 200);
             receiver.HealSelf(300);
             receiver.Health.Should().Be(1000);
         }
@@ -135,11 +146,45 @@ namespace RPGCombat.Test
         {
             var dealer = new Character();
             var receiver = new Character();
-            dealer.DealDamage(receiver, 1200);
+            dealer.Attack(receiver, 1200);
             receiver.HealSelf(300);
             receiver.Health.Should().Be(0);
         }
 
+
+        [Fact]
+        public void melee_characters_have_attack_range_of_2_meters()
+        {
+            var meleeFighter = new Character(FighterType.MeleeFighter);
+            meleeFighter.AttackRange.Should().Be(2);
+        }
+
+        [Fact]
+        public void ranged_characters_have_attack_range_of_20_meters()
+        {
+            var rangedFighter = new Character(FighterType.RangedFighter);
+            rangedFighter.AttackRange.Should().Be(20);
+        }
+
+        [Fact]
+        public void can_attack_if_in_range()
+        {
+            var rangedFighter = new Character(FighterType.RangedFighter);
+            var target = new Character();
+            target.Position = new Point2D(10, 10);
+            var successful = rangedFighter.Attack(target, 100);
+            successful.Should().BeTrue();
+        }
+
+        [Fact]
+        public void cannot_attack_if_not_in_range()
+        {
+            var rangedFighter = new Character(FighterType.RangedFighter);
+            var target = new Character();
+            target.Position = new Point2D(19, 19);
+            var successful = rangedFighter.Attack(target, 100);
+            successful.Should().BeFalse();
+        }
 
     }
 }
