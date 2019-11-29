@@ -48,7 +48,7 @@ namespace GameOfLife2
 
         private char CellToChar(Boolean cell)
         {
-            return cell == true ? '*' : '.';
+            return cell == true ? 'o' : ' ';
         }
 
         public void SetDead(int row, int col)

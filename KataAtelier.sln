@@ -19,7 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfLife2", "GameOfLife2\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfLife2.Tests", "GameOfLife2.Tests\GameOfLife2.Tests.csproj", "{DBE8778C-AB63-4B20-8845-FEFBC8A69A0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfLife2.App", "GameOfLife2.App\GameOfLife2.App.csproj", "{61A04C63-5FD9-4694-B292-588021F9C63D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfLife2.App", "GameOfLife2.App\GameOfLife2.App.csproj", "{61A04C63-5FD9-4694-B292-588021F9C63D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPGCombat", "RPGCombat\RPGCombat.csproj", "{C3FD1813-42F8-4B29-B05D-5F2851726B05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPGCombat.Test", "RPGCombat.Test\RPGCombat.Test.csproj", "{87FF980F-8E73-41DF-8A6D-1946ED0C4B1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{61A04C63-5FD9-4694-B292-588021F9C63D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61A04C63-5FD9-4694-B292-588021F9C63D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61A04C63-5FD9-4694-B292-588021F9C63D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3FD1813-42F8-4B29-B05D-5F2851726B05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3FD1813-42F8-4B29-B05D-5F2851726B05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3FD1813-42F8-4B29-B05D-5F2851726B05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3FD1813-42F8-4B29-B05D-5F2851726B05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87FF980F-8E73-41DF-8A6D-1946ED0C4B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87FF980F-8E73-41DF-8A6D-1946ED0C4B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87FF980F-8E73-41DF-8A6D-1946ED0C4B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87FF980F-8E73-41DF-8A6D-1946ED0C4B1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
