@@ -319,23 +319,23 @@ namespace RPGCombat.Test
         }
 
         [Fact]
-        public void Characters_can_damage_non_character_things()
+        public void characters_can_damage_props()
         {
             var character = new Character();
             var tree = new Tree();
             
             character.Attack(tree, 10);
-            tree.Health.Should().Be(tree.MAX_HEALTH - 10);
+            tree.Health.Should().Be(tree.MaxHealth - 10);
             
         }
 
         [Fact]
-        public void When_reduced_to_0_Health_things_are_destroyed()
+        public void when_reduced_to_0_health_props_are_destroyed()
         {
             var character = new Character();
             var tree = new Tree();
 
-            character.Attack(tree, tree.MAX_HEALTH + 10);
+            character.Attack(tree, tree.MaxHealth + 10);
             tree.IsDead.Should().BeTrue();
 
         }

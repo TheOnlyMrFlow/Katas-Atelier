@@ -4,8 +4,8 @@ using System.Text;
 
 namespace RPGCombat
 {
-    public class Tree : Props
+    public interface IHealable
     {
-        public override int MaxHealth => 2000;
+        void ReceiveHeal(int healAmount);
     }
 }
