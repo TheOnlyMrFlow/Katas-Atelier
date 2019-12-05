@@ -11,24 +11,24 @@ namespace RPGCombat
         RangedFighter
     }
 
-    public class Character
+    public class Character : Entity
     {
 
         private ISet<Faction> _factions = new HashSet<Faction>();
 
         public IEnumerable<Faction> Factions => _factions.AsEnumerable();
 
-        public const int MAX_HEALTH = 1000;
+        public override int MAX_HEALTH => 1000;
 
         public const int MIN_LEVEL_DIFFERENCE_FOR_DAMAGE_MODIFICATION = 5;
 
         public const int STARTING_LEVEL = 1;
 
-        public const float DMG_RATIO_WHEN_LEVEL_DIFF= 0.5f;
-        public int Health { get; set; }
+        public const float MALUS_DAMAGE_RATIO = 0.5f;
+
+        public const float BONUS_DAMAGE_RATIO = 1.5f;
         public int Level { get; set; }
-        public bool IsAlive { get => Health > 0; }
-        public bool IsDead { get => !IsAlive; }
+
         public FighterType Type { get; set; }
         public int AttackRange { get => fighterTypeToRange[Type]; }
 
@@ -39,52 +39,16 @@ namespace RPGCombat
                 {FighterType.RangedFighter, 20 }
             };
 
-        public Point2D Position;
 
-        public Character(FighterType type = FighterType.MeleeFighter)
+        public Character(FighterType type = FighterType.MeleeFighter) : base()
         {
             Type = type;
-            Health = MAX_HEALTH;
             Level = STARTING_LEVEL;
-            Position = new Point2D(0, 0);
         }
 
-        public bool Attack(Character target, int damageAmount)
+        public bool HealSelf(int healAmount)
         {
-            if (this == target)
-                return false;
-
-            if (IsInRangeToAttack(target) == false)
-                return false;
-
-            if (IsAlliedWith(target))
-                return false;
-
-            if (target.IsFiveOrMoreLevelHigherThan(this))
-            {
-                var multiplier = DMG_RATIO_WHEN_LEVEL_DIFF;
-                damageAmount = (int) (damageAmount * multiplier);
-            }
-            else if (this.IsFiveOrMoreLevelHigherThan(target))
-            {
-                var multiplier = 1 + DMG_RATIO_WHEN_LEVEL_DIFF;
-                damageAmount = (int)(damageAmount *multiplier);
-            }
-
-            target.applyDamage(damageAmount);
-
-            return true;
-        }
-
-
-        private bool IsInRangeToAttack(Character other)
-        {
-            return this.Position.DistanceTo(other.Position) <= AttackRange;
-        }
-
-        private void applyDamage(int damageAmount)
-        {
-            Health = Math.Max(0, Health - damageAmount);
+            return Heal(this, healAmount);
         }
 
         public bool Heal(Character target, int healAmount)
@@ -101,14 +65,59 @@ namespace RPGCombat
 
         }
 
-        public bool HealSelf(int healAmount)
+        public bool Attack(Character target, int damageAmount)
         {
-            return Heal(this, healAmount);
+
+            if (IsAlliedWith(target))
+                return false;
+
+            var damageRatio = DamageRatioAgainst(target);
+            var adjustedDamageAmount = (int) (damageAmount * damageRatio);
+
+            return Attack((Entity)target, adjustedDamageAmount);
+            
         }
 
-        private bool IsFiveOrMoreLevelHigherThan(Character other)
+        public bool Attack(Entity target, int damageAmount)
+        {
+            if (this == target)
+                return false;
+
+            if (IsInRangeToAttack(target) == false)
+                return false;
+
+            target.TakeDamage(damageAmount);
+
+            return true;
+        }
+
+
+        private bool IsInRangeToAttack(Entity other)
+        {
+            return this.Position.DistanceTo(other.Position) <= AttackRange;
+        }
+
+        private float DamageRatioAgainst(Character target)
+        {
+            var dmgRatio = 1f;
+
+            if (IsEligibleForBonusDmgAgainst(target))
+                dmgRatio *= BONUS_DAMAGE_RATIO;
+
+            else if (IsEligibleForMalusDmgAgainst(target))
+                dmgRatio *= MALUS_DAMAGE_RATIO;
+
+            return dmgRatio;
+        }
+
+        private bool IsEligibleForBonusDmgAgainst(Character other)
         {
             return this.Level - other.Level >= MIN_LEVEL_DIFFERENCE_FOR_DAMAGE_MODIFICATION;
+        }
+
+        private bool IsEligibleForMalusDmgAgainst(Character other)
+        {
+            return other.Level - this.Level >= MIN_LEVEL_DIFFERENCE_FOR_DAMAGE_MODIFICATION;
         }
 
         public void JoinFaction(Faction faction)

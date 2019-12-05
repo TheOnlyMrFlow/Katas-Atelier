@@ -51,6 +51,14 @@ namespace RPGCombat.Test
 
 
 
+    // ITERATION 5
+    // Characters can damage non-character things(props).
+    // Anything that has Health may be a target
+    // These things cannot be Healed and they do not Deal Damage
+    // These things do not belong to Factions; they are neutral
+    // When reduced to 0 Health, things are Destroyed
+    // As an example, you may create a Tree with 2000 Health
+
 
     public class CharacterTest
     {
@@ -309,6 +317,31 @@ namespace RPGCombat.Test
             characterB.Health.Should().Be(500);
 
         }
+
+        [Fact]
+        public void Characters_can_damage_non_character_things()
+        {
+            var character = new Character();
+            var tree = new Tree();
+            
+            character.Attack(tree, 10);
+            tree.Health.Should().Be(tree.MAX_HEALTH - 10);
+            
+        }
+
+        [Fact]
+        public void When_reduced_to_0_Health_things_are_destroyed()
+        {
+            var character = new Character();
+            var tree = new Tree();
+
+            character.Attack(tree, tree.MAX_HEALTH + 10);
+            tree.IsDead.Should().BeTrue();
+
+        }
+
+
+
 
     }
 }
