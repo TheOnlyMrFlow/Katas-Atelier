@@ -22,7 +22,7 @@ namespace Parser.Test
             scannerJournee
                 .ObtenirToutesLesTransactionsALaDateDu(new DateTime(2019, 1, 4))
                 .ElementAt(10)
-                .idProduit
+                .Produit
                 .Should().Be(11174);
         }
 
@@ -32,7 +32,7 @@ namespace Parser.Test
             scannerJournee
                 .ObtenirToutesLesTransactionsALaDateDu(new DateTime(2019, 1, 4))
                 .ElementAt(10)
-                .uuidMagasin
+                .Magasin
                 .Should().Be("f8f52ab1-4ed6-068a-dbdd-a4ef4fb3aada");
         }
 
@@ -42,7 +42,7 @@ namespace Parser.Test
             scannerJournee
                 .ObtenirToutesLesTransactionsALaDateDu(new DateTime(2019, 1, 4))
                 .ElementAt(10)
-                .quantité
+                .Quantité
                 .Should().Be(1);
         }
 

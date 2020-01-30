@@ -4,23 +4,23 @@ using System.Text;
 
 namespace Domaine
 {
-    class StatistiqueProduit //Entity
+    public class StatistiqueProduit //Entity
     {
         public StatistiqueProduit(uint idProduit)
         {
-            this.IdProduit = idProduit;
+            this.Produit = idProduit;
         }
 
         private readonly object _lockQuantite = new object();
         private readonly object _lockChiffreDaffaire = new object();
 
 
-        public uint IdProduit { get; }
+        public uint Produit { get; }
 
-        public int QuantiteVendue { get => _quantiteVendue; }
+        public int QuantitéVendue { get => _quantiteVendue; }
         private int _quantiteVendue = 0;
-        public double ChiffreDaffaire { get => _chiffreDaffaire; }
-        private double _chiffreDaffaire = 0;
+        public decimal ChiffreDAffaire { get => _chiffreDaffaire; }
+        private decimal _chiffreDaffaire = 0;
 
         public void AjouterQuantite(int quantite)
         {
@@ -30,7 +30,7 @@ namespace Domaine
             }
         }
 
-        public void AjouterChiffreDAffaire(double chiffreDaffaire)
+        public void AjouterChiffreDAffaire(decimal chiffreDaffaire)
         {
             lock (_lockChiffreDaffaire)
             {

@@ -8,18 +8,18 @@ namespace Domaine
     class StatistiqueMagasin // Entity
     {
 
-        public StatistiqueMagasin(string uidMagasin)
+        public StatistiqueMagasin(Guid magasin)
         {
-            this.UidMagasin = uidMagasin;
+            this.magasin = magasin;
         }
 
-        public string UidMagasin { get; }
+        public Guid magasin { get; }
 
         private readonly object _lock = new object();
 
         Dictionary<uint, StatistiqueProduit> produitVersStatistiqueLocale = new Dictionary<uint, StatistiqueProduit>();
 
-        public void AjouterQuantiteEtChiffreDaffaireAuProduit(uint idProduit, int quantite, double chiffreDaffaire)
+        public void AjouterQuantiteEtChiffreDaffaireAuProduit(uint idProduit, int quantite, decimal chiffreDaffaire)
         {
             lock (_lock) {
                 StatistiqueProduit statLocaleDuProduit;
@@ -37,22 +37,22 @@ namespace Domaine
             }
         }
 
-        public IEnumerable<uint> Top100Ventes()
+        public IEnumerable<StatistiqueProduit> Top100Ventes()
         {
             return produitVersStatistiqueLocale
                 .Values
-                .OrderByDescending(stat => stat.QuantiteVendue)
-                .Take(100)
-                .Select(stat => stat.IdProduit);
+                .OrderByDescending(stat => stat.QuantitéVendue)
+                .Take(100);
+                //.Select(stat => stat.IdProduit);
         }
 
-        public IEnumerable<uint> Top100CA()
+        public IEnumerable<StatistiqueProduit> Top100CA()
         {
             return produitVersStatistiqueLocale
                 .Values
-                .OrderByDescending(stat => stat.ChiffreDaffaire)
-                .Take(100)
-                .Select(stat => stat.IdProduit);
+                .OrderByDescending(stat => stat.ChiffreDAffaire)
+                .Take(100);
+                //.Select(stat => stat.IdProduit);
         }
     }
 }

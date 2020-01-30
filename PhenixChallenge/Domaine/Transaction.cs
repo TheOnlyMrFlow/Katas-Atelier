@@ -6,11 +6,11 @@ namespace Domaine
 {
     public class Transaction // Value Object
     {
-        public string uuidMagasin;
+        public Guid Magasin;
 
-        public uint idProduit;
+        public uint Produit;
 
-        public ushort quantité;
+        public ushort Quantité;
 
     }
 

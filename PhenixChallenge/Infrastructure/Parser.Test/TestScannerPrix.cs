@@ -12,8 +12,8 @@ namespace Parser.Test
         [Fact]
         public void le_scanner_trouve_le_bon_prix()
         {
-            scannerPrix.FixerLaDate(new DateTime(2019, 1, 4));
-            scannerPrix.ObtenirLePrixDe(226, "3a92d362-ce23-2b76-e30d-7a44fa00c30d").Should().Be(681.0);
+            var catalogue = scannerPrix.ObtenirLeCatalogueDuJour(new DateTime(2019, 1, 4));
+            catalogue.ObtenirLePrixDe(226, new Guid("3a92d362-ce23-2b76-e30d-7a44fa00c30d")).Should().Be(681.0);
         }
 
     }

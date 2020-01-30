@@ -24,9 +24,9 @@ namespace Parser
                 .Select(ligne => ligne.Split("|"))
                 .Select(data => new Transaction
                 {
-                    uuidMagasin = data[2],
-                    idProduit = uint.Parse(data[3]),
-                    quantité = ushort.Parse(data[4])
+                    Magasin = new Guid(data[2]),
+                    Produit = uint.Parse(data[3]),
+                    Quantité = ushort.Parse(data[4])
                 });
         }
 

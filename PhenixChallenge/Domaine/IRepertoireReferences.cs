@@ -6,7 +6,6 @@ namespace Domaine
 {
     public interface IRepertoireReferences
     {
-        void FixerLaDate(DateTime date);
-        double ObtenirLePrixDe(uint idProduit, string uidMagasin);
+        CatalogueQuotidien ObtenirLeCatalogueDuJour(DateTime date);
     }
 }

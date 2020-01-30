@@ -11,7 +11,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser.Test", "Infrastructu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{A767F24F-F1E2-4B61-831B-389201048030}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGenerator", "DataGenerator\DataGenerator.csproj", "{5CDF5122-94B7-4704-A7E5-0AA9AD4AA486}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataGenerator", "DataGenerator\DataGenerator.csproj", "{5CDF5122-94B7-4704-A7E5-0AA9AD4AA486}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{57E43297-747B-4698-B967-5E6EAECBEC96}"
+	ProjectSection(SolutionItems) = preProject
+		data\reference_prod-10f2f3e6-f728-41f3-b079-43b0aa758292_20170514.data = data\reference_prod-10f2f3e6-f728-41f3-b079-43b0aa758292_20170514.data
+		data\reference_prod-29366c83-eae9-42d3-a8af-f15339830dc5_20170514.data = data\reference_prod-29366c83-eae9-42d3-a8af-f15339830dc5_20170514.data
+		data\reference_prod-2a4b6b81-5aa2-4ad8-8ba9-ae1a006e7d71_20170514.data = data\reference_prod-2a4b6b81-5aa2-4ad8-8ba9-ae1a006e7d71_20170514.data
+		data\reference_prod-6af0502b-ce7a-4a6f-b5d3-516d09514095_20170514.data = data\reference_prod-6af0502b-ce7a-4a6f-b5d3-516d09514095_20170514.data
+		data\reference_prod-72a2876c-bc8b-4f35-8882-8d661fac2606_20170514.data = data\reference_prod-72a2876c-bc8b-4f35-8882-8d661fac2606_20170514.data
+		data\reference_prod-8e588f2f-d19e-436c-952f-1cdd9f0b12b0_20170514.data = data\reference_prod-8e588f2f-d19e-436c-952f-1cdd9f0b12b0_20170514.data
+		data\reference_prod-af068240-8198-4b79-9cf9-c28c0db65f63_20170514.data = data\reference_prod-af068240-8198-4b79-9cf9-c28c0db65f63_20170514.data
+		data\reference_prod-bdc2a431-797d-4b07-9567-67c565a67b84_20170514.data = data\reference_prod-bdc2a431-797d-4b07-9567-67c565a67b84_20170514.data
+		data\reference_prod-bf0999da-ae45-49df-983e-89020198330b_20170514.data = data\reference_prod-bf0999da-ae45-49df-983e-89020198330b_20170514.data
+		data\reference_prod-d4bfbabf-0160-4e87-8688-78e0943a396a_20170514.data = data\reference_prod-d4bfbabf-0160-4e87-8688-78e0943a396a_20170514.data
+		data\reference_prod-dd43720c-be43-41b6-bc4a-ac4beabd0d9b_20170514.data = data\reference_prod-dd43720c-be43-41b6-bc4a-ac4beabd0d9b_20170514.data
+		data\reference_prod-e3d54d00-18be-45e1-b648-41147638bafe_20170514.data = data\reference_prod-e3d54d00-18be-45e1-b648-41147638bafe_20170514.data
+		data\transactions_20170514.data = data\transactions_20170514.data
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domaine.Test", "Domaine.Test\Domaine.Test.csproj", "{9AC948F7-5429-41BC-8141-92B887EE2728}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +58,10 @@ Global
 		{5CDF5122-94B7-4704-A7E5-0AA9AD4AA486}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CDF5122-94B7-4704-A7E5-0AA9AD4AA486}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CDF5122-94B7-4704-A7E5-0AA9AD4AA486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AC948F7-5429-41BC-8141-92B887EE2728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AC948F7-5429-41BC-8141-92B887EE2728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AC948F7-5429-41BC-8141-92B887EE2728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AC948F7-5429-41BC-8141-92B887EE2728}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
